@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navigation_view">
+
+    <group android:checkableBehavior="single"
+        >
+        <item
+            android:id="@+id/createdept"
+
+            android:title="Create Department"></item>
+        <item
+            android:id="@+id/listdept"
+            android:title="List of Department"></item>
+        <item
+            android:id="@+id/edit"
+            android:title="Edit"></item>
+    </group>
+</menu>

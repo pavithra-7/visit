@@ -1,5 +1,6 @@
 package com.example.visit;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
 
@@ -47,8 +48,8 @@ public class hampageuser extends AppCompatActivity implements NavigationView.OnN
     public boolean onNavigationItemSelected(MenuItem item) {
         switch (item.getItemId()){
             case R.id.createuser:
-                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_containeruser,
-                        new createuser()).commit();
+                Intent intent = new Intent(hampageuser.this,createuser.class);
+                startActivity(intent);
                 break;
             case R.id.listuser:
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_containeruser,

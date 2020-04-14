@@ -3,4 +3,48 @@
     <string name="navigation_drawer_open">open navigation drawer</string>
     <string name="navigation_drawer_close">close navigation drawer</string>
 
+    <string-array name="states">
+        <item>Choose State</item>
+        <item>Andhra Pradesh</item>
+        <item>Chattisgarh</item>
+        <item>Karnataka</item>
+        <item>Kerala</item>
+        <item>Maharashtra</item>
+        <item>Odisha</item>
+        <item>Telanagana</item>
+        <item>Tamil Nadu</item>
+    </string-array>
+
+    <string-array name="cities">
+        <item>Choose City</item>
+        <item>Banglore</item>
+        <item>Bhubaneswar</item>
+        <item>Chennai</item>
+        <item>Hyderabad</item>
+        <item>Mumbai</item>
+        <item>Thiruvananthapuram</item>
+        <item>Raipur</item>
+        <item>Vijayawada</item>
+        <item>Visakhapatnam</item>
+    </string-array>
+
+    <string-array name="districts">
+        <item>Choose District</item>
+        <item>Adilabad</item>
+        <item>Bhadradri</item>
+        <item>Chitoor</item>
+        <item>East Godavari</item>
+        <item>Guntur</item>
+        <item>Kamareddy</item>
+        <item>Karimnagar</item>
+        <item>Khammam</item>
+        <item>Krishna</item>
+        <item>Kurnool</item>
+        <item>Mahabubabad</item>
+        <item>Srikakulam</item>
+        <item>Visakhapatnam</item>
+        <item>Vizianagaram</item>
+        <item>West Godavari</item>
+    </string-array>
+
 </resources>

@@ -1,5 +1,6 @@
 package com.example.visit;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
 
@@ -47,8 +48,10 @@ public class hampage extends AppCompatActivity implements NavigationView.OnNavig
     public boolean onNavigationItemSelected(MenuItem item) {
         switch (item.getItemId()){
             case R.id.createdept:
-                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
-                        new createdept()).commit();
+                /*getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
+                        new createdept()).commit();*/
+                Intent intent = new Intent(hampage.this,createdept.class);
+                startActivity(intent);
                 break;
             case R.id.listdept:
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,

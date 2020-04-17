@@ -10,6 +10,7 @@ public class User {
     private String purposevisit;
     private String uscontact;
     private String usmail;
+
     public User(){
 
     }

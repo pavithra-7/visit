@@ -11,24 +11,29 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".MainActivity">
+        <activity android:name=".activity.DepartmentHomeActivity"/>
+        <activity android:name=".activity.AdminHomeActivity" />
+        <activity android:name=".activity.LoginActivity" />
+        <activity android:name=".activity.SplashActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".createdept"></activity>
-        <activity android:name=".createuser"> </activity>
-        <activity android:name=".adminpage"></activity>
-        <activity android:name=".home"></activity>
-                <activity android:name=".hampage"
+        <activity android:name=".createdept" />
+        <activity android:name=".createuser" />
+        <activity android:name=".adminpage" />
+        <activity android:name=".home" />
+        <activity
+            android:name=".hampage"
             android:label="MENU"
-            android:theme="@style/AppTheme.ActionBar"/>
-<activity android:name=".hampageuser"
-    android:label="MENU"
-    android:theme="@style/AppTheme.ActionBar"/>
-        <activity android:name=".deptlogin"/>
+            android:theme="@style/AppTheme.ActionBar" />
+        <activity
+            android:name=".hampageuser"
+            android:label="MENU"
+            android:theme="@style/AppTheme.ActionBar" />
+        <activity android:name=".deptlogin" />
     </application>
 
 </manifest>

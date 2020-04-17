@@ -2,6 +2,11 @@
     <string name="app_name">visit</string>
     <string name="navigation_drawer_open">open navigation drawer</string>
     <string name="navigation_drawer_close">close navigation drawer</string>
+    <string name="visitor_management_system">VISITOR MANAGEMENT SYSTEM</string>
+    <string name="create_department">Create Department</string>
+    <string name="department_list">Department List</string>
+    <string name="users_list">Users List</string>
+    <string name="users_graph">Users Graph</string>
 
     <string-array name="states">
         <item>Choose State</item>

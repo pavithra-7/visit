@@ -91,6 +91,8 @@ public class UsersListAdapter extends RecyclerView.Adapter<UsersListAdapter.MyVi
         Button btnEdit;
         @BindView(R.id.btnDelete)
         Button btnDelete;
+        @BindView(R.id.btnCheckout)
+        Button btnCheckout;
 
         public MyViewHolder(View view) {
             super(view);
@@ -124,6 +126,12 @@ public class UsersListAdapter extends RecyclerView.Adapter<UsersListAdapter.MyVi
         });
 
         holder.btnDelete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+            }
+        });
+        holder.btnCheckout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 

@@ -1,10 +1,14 @@
 package com.example.visit.model;
 
+import java.util.concurrent.atomic.AtomicInteger;
+
 public class DepartmentModel {
 
-    private String depID;
+    private static final AtomicInteger count = new AtomicInteger(0);
+    private int depID;
     private String depName;
     private String depMail;
+    private String depPassword;
     private String depPhone;
     private String depCode;
     private String headofdep;
@@ -14,10 +18,11 @@ public class DepartmentModel {
     public DepartmentModel() {
     }
 
-    public DepartmentModel(String depID, String depName, String depMail, String depPhone, String depCode, String headofdep, String headEmail, String headPhone) {
-        this.depID = depID;
+    public DepartmentModel( String depName, String depMail,String depPassword, String depPhone, String depCode, String headofdep, String headEmail, String headPhone) {
+        depID = count.incrementAndGet();
         this.depName = depName;
         this.depMail = depMail;
+        this.depPassword = depPassword;
         this.depPhone = depPhone;
         this.depCode = depCode;
         this.headofdep = headofdep;
@@ -25,11 +30,11 @@ public class DepartmentModel {
         this.headPhone = headPhone;
     }
 
-    public String getDepID() {
+    public int getDepID() {
         return depID;
     }
 
-    public void setDepID(String depID) {
+    public void setDepID(int depID) {
         this.depID = depID;
     }
 
@@ -47,6 +52,14 @@ public class DepartmentModel {
 
     public void setDepMail(String depMail) {
         this.depMail = depMail;
+    }
+
+    public String getDepPassword() {
+        return depPassword;
+    }
+
+    public void setDepPassword(String depPassword) {
+        this.depPassword = depPassword;
     }
 
     public String getDepPhone() {

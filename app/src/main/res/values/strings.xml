@@ -7,6 +7,8 @@
     <string name="department_list">Department List</string>
     <string name="users_list">Users List</string>
     <string name="users_graph">Users Graph</string>
+    <string name="admin_login">Admin Login</string>
+    <string name="department_login">Department Login</string>
 
     <string-array name="states">
         <item>Choose State</item>

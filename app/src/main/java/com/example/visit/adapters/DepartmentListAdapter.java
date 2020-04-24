@@ -9,6 +9,7 @@ import android.widget.Filter;
 import android.widget.Filterable;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.visit.R;
@@ -51,7 +52,7 @@ public class DepartmentListAdapter extends RecyclerView.Adapter<DepartmentListAd
 
                     for (DepartmentModel androidVersion : departmentModelList) {
 
-                        if (androidVersion.getDepName().toLowerCase().contains(charString) || androidVersion.getDepID().toLowerCase().contains(charString) ) {
+                        if (androidVersion.getDepName().toLowerCase().contains(charString)  ) {
 
                             filteredList.add(androidVersion);
                         }
@@ -96,6 +97,7 @@ public class DepartmentListAdapter extends RecyclerView.Adapter<DepartmentListAd
     }
 
 
+    @NonNull
     @Override
     public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.from(parent.getContext())

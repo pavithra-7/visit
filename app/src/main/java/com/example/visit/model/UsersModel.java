@@ -1,42 +1,49 @@
 package com.example.visit.model;
 
+import java.util.concurrent.atomic.AtomicInteger;
+
 public class UsersModel {
 
-    private String depID;
+    private static final AtomicInteger count = new AtomicInteger(0);
+    private int userId;
     private String name;
+    private String  email;
+    private String phone;
+    private String whomToMeet;
+    private String purposeToMeet;
+    private String address;
     private String state;
     private String city;
-    private String dist;
-    private String address;
-    private String whomtoMeet;
-    private String purposetoMeet;
-    private String mobile;
-    private String email;
-    private String profile;
+    private String district;
+    private String imagePath;
+
 
     public UsersModel() {
     }
 
-    public UsersModel(String depID, String name, String state, String city, String dist, String address, String whomtoMeet, String purposetoMeet, String mobile, String email, String profile) {
-        this.depID = depID;
+
+    public UsersModel(String name, String email, String phone, String whomToMeet, String purposeToMeet, String address, String state, String city, String district, String imagePath) {
+        userId = count.incrementAndGet();
         this.name = name;
+        this.email = email;
+        this.phone = phone;
+        this.whomToMeet = whomToMeet;
+        this.purposeToMeet = purposeToMeet;
+        this.address = address;
         this.state = state;
         this.city = city;
-        this.dist = dist;
-        this.address = address;
-        this.whomtoMeet = whomtoMeet;
-        this.purposetoMeet = purposetoMeet;
-        this.mobile = mobile;
-        this.email = email;
-        this.profile = profile;
+        this.district = district;
+        this.imagePath = imagePath;
     }
 
-    public String getDepID() {
-        return depID;
+
+
+    public int getUserId() {
+        return userId;
     }
 
-    public void setDepID(String depID) {
-        this.depID = depID;
+    public void setUserId(int userId) {
+        this.userId = userId;
     }
 
     public String getName() {
@@ -45,6 +52,46 @@ public class UsersModel {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+
+    public String getWhomToMeet() {
+        return whomToMeet;
+    }
+
+    public void setWhomToMeet(String whomToMeet) {
+        this.whomToMeet = whomToMeet;
+    }
+
+    public String getPurposeToMeet() {
+        return purposeToMeet;
+    }
+
+    public void setPurposeToMeet(String purposeToMeet) {
+        this.purposeToMeet = purposeToMeet;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
     }
 
     public String getState() {
@@ -63,59 +110,19 @@ public class UsersModel {
         this.city = city;
     }
 
-    public String getDist() {
-        return dist;
+    public String getDistrict() {
+        return district;
     }
 
-    public void setDist(String dist) {
-        this.dist = dist;
+    public void setDistrict(String district) {
+        this.district = district;
     }
 
-    public String getAddress() {
-        return address;
+    public String getImagePath() {
+        return imagePath;
     }
 
-    public void setAddress(String address) {
-        this.address = address;
-    }
-
-    public String getWhomtoMeet() {
-        return whomtoMeet;
-    }
-
-    public void setWhomtoMeet(String whomtoMeet) {
-        this.whomtoMeet = whomtoMeet;
-    }
-
-    public String getPurposetoMeet() {
-        return purposetoMeet;
-    }
-
-    public void setPurposetoMeet(String purposetoMeet) {
-        this.purposetoMeet = purposetoMeet;
-    }
-
-    public String getMobile() {
-        return mobile;
-    }
-
-    public void setMobile(String mobile) {
-        this.mobile = mobile;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getProfile() {
-        return profile;
-    }
-
-    public void setProfile(String profile) {
-        this.profile = profile;
+    public void setImagePath(String imagePath) {
+        this.imagePath = imagePath;
     }
 }

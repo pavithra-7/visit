@@ -1,6 +1,7 @@
 package com.example.visit.activity;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
@@ -12,8 +13,15 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.visit.R;
+import com.example.visit.adapters.DepartmentListAdapter;
 import com.example.visit.adapters.UsersListAdapter;
+import com.example.visit.model.DepartmentModel;
 import com.example.visit.model.UsersModel;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.Objects;
@@ -29,6 +37,8 @@ public class UserListActivity extends AppCompatActivity {
     UsersListAdapter adapter;
     private ArrayList<UsersModel> usersModels = new ArrayList<>();
 
+    String TAG="FIREBASE_DATA";
+    DatabaseReference myRef;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -36,24 +46,42 @@ public class UserListActivity extends AppCompatActivity {
         ButterKnife.bind(this);
         Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setTitle("Users List");
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this, RecyclerView.VERTICAL, false);
-        recyclerUsers.setLayoutManager(linearLayoutManager);
-        recyclerUsers.setHasFixedSize(true);
-        adapter = new UsersListAdapter(usersModels, this);
-        recyclerUsers.setAdapter(adapter);
 
+
+        myRef = FirebaseDatabase.getInstance().getReference("UserDetails");
         data();
 
     }
 
     private void data() {
 
-        usersModels.add(new UsersModel("DEP@#$", "swaroop", "telangana", "hyd", "hyd", "kukatpally", "anil", "work", "9854543243", "anil@gmail.com", ""));
-        usersModels.add(new UsersModel("DEP@#$", "Anil", "telangana", "hyd", "hyd", "kukatpally", "anil", "work", "9854543243", "anil@gmail.com", ""));
-        usersModels.add(new UsersModel("DEP@#$", "mahesh", "telangana", "hyd", "hyd", "kukatpally", "anil", "work", "9854543243", "anil@gmail.com", ""));
-        usersModels.add(new UsersModel("DEP@#$", "swaroop", "telangana", "hyd", "hyd", "kukatpally", "anil", "work", "9854543243", "anil@gmail.com", ""));
-    }
+        myRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
+                usersModels.clear();
+                for (DataSnapshot issue : dataSnapshot.getChildren()) {
+                    // do something with the individual "issues"
+                    UsersModel details = issue.getValue(UsersModel.class);
+                    usersModels.add(details);
+                }
+
+                LinearLayoutManager linearLayoutManager = new LinearLayoutManager(UserListActivity.this, RecyclerView.VERTICAL, false);
+                recyclerUsers.setLayoutManager(linearLayoutManager);
+                recyclerUsers.setHasFixedSize(true);
+                adapter = new UsersListAdapter(usersModels, UserListActivity.this);
+                recyclerUsers.setAdapter(adapter);
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                // Failed to read value
+                Log.d(TAG, "onCancelled: " + error);
+
+            }
+        });
+    }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.search_menu, menu);

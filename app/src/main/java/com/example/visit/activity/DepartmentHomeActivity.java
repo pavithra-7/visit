@@ -2,7 +2,6 @@ package com.example.visit.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -10,8 +9,6 @@ import android.widget.Button;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.SearchView;
-import androidx.core.view.MenuItemCompat;
 
 import com.example.visit.R;
 
@@ -67,7 +64,7 @@ public class DepartmentHomeActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()){
             case R.id.actionLogout:
-                Intent intent = new Intent(this,LoginActivity.class);
+                Intent intent = new Intent(this, AdminLoginActivity.class);
                 startActivity(intent);
                 break;
         }

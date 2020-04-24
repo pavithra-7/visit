@@ -52,7 +52,7 @@ public class UsersListAdapter extends RecyclerView.Adapter<UsersListAdapter.MyVi
 
                     for (UsersModel androidVersion : userModelList) {
 
-                        if (androidVersion.getName().toLowerCase().contains(charString) || androidVersion.getDepID().toLowerCase().contains(charString)) {
+                        if (androidVersion.getName().toLowerCase().contains(charString)) {
 
                             filteredList.add(androidVersion);
                         }
@@ -112,11 +112,11 @@ public class UsersListAdapter extends RecyclerView.Adapter<UsersListAdapter.MyVi
     @Override
     public void onBindViewHolder(MyViewHolder holder, int position) {
         UsersModel userModel = userModelListFull.get(position);
-        holder.txtDepId.setText(userModel.getDepID());
+        holder.txtDepId.setText(userModel.getUserId());
         holder.txtName.setText(userModel.getName());
         holder.txtEmail.setText(userModel.getEmail());
-        holder.txtPhone.setText(userModel.getMobile());
-        holder.txtmeetTo.setText(userModel.getWhomtoMeet());
+        holder.txtPhone.setText(userModel.getPhone());
+        holder.txtmeetTo.setText(userModel.getWhomToMeet());
 
         holder.btnEdit.setOnClickListener(new View.OnClickListener() {
             @Override

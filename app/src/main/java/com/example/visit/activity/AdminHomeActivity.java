@@ -6,11 +6,15 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.visit.R;
+import com.example.visit.utils.ConstantValues;
+import com.example.visit.utils.MyAppPrefsManager;
+import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.Objects;
 
@@ -29,11 +33,13 @@ public class AdminHomeActivity extends AppCompatActivity {
     @BindView(R.id.btnUsersGraph)
     Button btnUsersGraph;
 
+    MyAppPrefsManager myAppPrefsManager;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_admin_home);
         ButterKnife.bind(this);
+        myAppPrefsManager=new MyAppPrefsManager(AdminHomeActivity.this);
         Objects.requireNonNull(getSupportActionBar()).setTitle("Admin Home Page");
     }
 
@@ -41,14 +47,14 @@ public class AdminHomeActivity extends AppCompatActivity {
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.btnCreateDepartment:
-                startActivity(new Intent(AdminHomeActivity.this,CreateDepartmentActivity.class));
+                startActivity(new Intent(AdminHomeActivity.this, CreateDepartmentActivity.class));
 
                 break;
             case R.id.btnDepartmentList:
-                startActivity(new Intent(AdminHomeActivity.this,DeaprtmentListActivity.class));
+                startActivity(new Intent(AdminHomeActivity.this, DeaprtmentListActivity.class));
                 break;
             case R.id.btnUsersList:
-                startActivity(new Intent(AdminHomeActivity.this,UserListActivity.class));
+                startActivity(new Intent(AdminHomeActivity.this, UserListActivity.class));
                 break;
             case R.id.btnUsersGraph:
                 break;
@@ -64,10 +70,18 @@ public class AdminHomeActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        switch (item.getItemId()){
+        switch (item.getItemId()) {
             case R.id.actionLogout:
-                Intent intent = new Intent(this,LoginActivity.class);
+                Toast.makeText(this, "Logout Successfully", Toast.LENGTH_SHORT).show();
+                FirebaseAuth.getInstance().signOut();
+                myAppPrefsManager.setAdminLoggedIn(false);
+                ConstantValues.IS_USER_LOGGED_IN_ADMIN = myAppPrefsManager.isAdminLoggedIn();
+                Intent intent = new Intent(AdminHomeActivity.this, AdminLoginActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent);
+                break;
+            case android.R.id.home:
+                onBackPressed();
                 break;
         }
         return super.onOptionsItemSelected(item);

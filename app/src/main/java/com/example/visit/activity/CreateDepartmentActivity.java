@@ -1,5 +1,6 @@
 package com.example.visit.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
@@ -80,6 +81,7 @@ public class CreateDepartmentActivity extends AppCompatActivity {
 
     public void next(){
 
+        String emailPattern = "[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+";
 
         deptName= Objects.requireNonNull(etDepartmentName.getText()).toString().trim();
         deptEmail= Objects.requireNonNull(etDepartmentEmail.getText()).toString().trim();
@@ -90,62 +92,65 @@ public class CreateDepartmentActivity extends AppCompatActivity {
         deptHeadEmail= Objects.requireNonNull(etHodEmail.getText()).toString().trim();
         deptHeadPhone= Objects.requireNonNull(etHodPhone.getText()).toString().trim();
 
-        String firstThreeChars = "";     //substring containing first 3 characters
+        if(deptName.isEmpty()) {
+            etDepartmentName.setError("Please enter Department Name");
+        } else if(deptEmail.isEmpty()) {
+            etDepartmentEmail.setError("Please enter Department Email ID");
+        } else if(!emailPattern.matches(deptEmail)) {
+            etDepartmentEmail.setError("Please enter Valid Department Email");
+        }else if(deptPhone.isEmpty()) {
+            etDepartmentPhone.setError("Please enter Department Phone");
+        } else if(deptPassword.isEmpty()) {
+            etDepartmentPassword.setError("Please enter Password");
+        } else if(deptHeadName.isEmpty()) {
+            etHod.setError("Please enter HOD Name");
+        } else if(deptHeadEmail.isEmpty()) {
+            etHodEmail.setError("Please enter HOD Email");
+        } else if(deptHeadPhone.isEmpty()) {
+            etHodPhone.setError("Please enter HOD Phone");
+        } else {
 
-        if (deptName.length() > 3)
-        {
-            firstThreeChars = deptName.substring(0, 3);
-        }
-        else
-        {
-            firstThreeChars = deptName;
-        }
+            String firstThreeChars = "";     //substring containing first 3 characters
 
-        String lastThreeDigits = "";     //substring containing last 3 characters
+            if (deptName.length() > 3) {
+                firstThreeChars = deptName.substring(0, 3);
+            } else {
+                firstThreeChars = deptName;
+            }
 
-        if (deptPhone.length() > 3)
-        {
-            lastThreeDigits = deptPhone.substring(deptPhone.length() - 3);
-        }
-        else
-        {
-            lastThreeDigits = deptPhone;
-        }
-        deptCode= (firstThreeChars+"_"+lastThreeDigits).toUpperCase();
+            String lastThreeDigits = "";     //substring containing last 3 characters
 
-        mAuth.createUserWithEmailAndPassword(deptEmail, deptPassword)
-                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if (task.isSuccessful()) {
-                            // Sign in success, update UI with the signed-in user's information
-                            Log.d(TAG, "createUserWithEmail:success");
-                            FirebaseUser user = mAuth.getCurrentUser();
-                            Log.d(TAG, "createUserWithEmail:success" + user);
-                            DepartmentModel departmentModel = new DepartmentModel(deptName,deptEmail,deptPassword,deptPhone,deptCode,deptHeadName,deptHeadEmail,deptHeadPhone);
-                            databaseReference.child(deptName).setValue(departmentModel);
-                            Toast.makeText(CreateDepartmentActivity.this, "Added Successfully", Toast.LENGTH_SHORT).show();
+            if (deptPhone.length() > 3) {
+                lastThreeDigits = deptPhone.substring(deptPhone.length() - 3);
+            } else {
+                lastThreeDigits = deptPhone;
+            }
+            deptCode = (firstThreeChars + "_" + lastThreeDigits).toUpperCase();
 
-
-                        } else {
-                            // If sign in fails, display a message to the user.
-                            Log.w(TAG, "createUserWithEmail:failure", task.getException());
-                            Toast.makeText(CreateDepartmentActivity.this, "Authentication failed.",
-                                    Toast.LENGTH_SHORT).show();
-
+            mAuth.createUserWithEmailAndPassword(deptEmail, deptPassword)
+                    .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                        @Override
+                        public void onComplete(@NonNull Task<AuthResult> task) {
+                            if (task.isSuccessful()) {
+                                // Sign in success, update UI with the signed-in user's information
+                                Log.d(TAG, "createUserWithEmail:success");
+                                FirebaseUser user = mAuth.getCurrentUser();
+                                Log.d(TAG, "createUserWithEmail:success" + user);
+                                DepartmentModel departmentModel = new DepartmentModel(deptName, deptEmail, deptPassword, deptPhone, deptCode, deptHeadName, deptHeadEmail, deptHeadPhone);
+                                databaseReference.child(deptName).setValue(departmentModel);
+                                Toast.makeText(CreateDepartmentActivity.this, "Added Successfully", Toast.LENGTH_SHORT).show();
+                                Intent intent = new Intent(CreateDepartmentActivity.this, AdminHomeActivity.class);
+                                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                startActivity(intent);
+                            } else {
+                                // If sign in fails, display a message to the user.
+                                Log.w(TAG, "createUserWithEmail:failure", task.getException());
+                                Toast.makeText(CreateDepartmentActivity.this, "Authentication failed.",
+                                        Toast.LENGTH_SHORT).show();
+                            }
                         }
-
-
-                    }
-                });
-
-
-
-
-
-
-
-
+                    });
+        }
     }
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {

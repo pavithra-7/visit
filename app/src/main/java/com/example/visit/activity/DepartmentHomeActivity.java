@@ -64,7 +64,7 @@ public class DepartmentHomeActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()){
             case R.id.actionLogout:
-                Intent intent = new Intent(this, AdminLoginActivity.class);
+                Intent intent = new Intent(this, HomeActivity.class);
                 startActivity(intent);
                 break;
         }

@@ -30,6 +30,13 @@ public class DepartmentModel {
         this.headPhone = headPhone;
     }
 
+    public DepartmentModel(String depPhone, String headofdep, String headEmail, String headPhone) {
+        this.depPhone = depPhone;
+        this.headofdep = headofdep;
+        this.headEmail = headEmail;
+        this.headPhone = headPhone;
+    }
+
     public int getDepID() {
         return depID;
     }

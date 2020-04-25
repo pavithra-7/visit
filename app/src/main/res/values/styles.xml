@@ -6,10 +6,12 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
-    </style>
+    </style><!--
 <style name="AppTheme.ActionBar">
     <item name="windowActionBar">true</item>
 <item name="windowNoTitle">true</item>
     <item name="android:statusBarColor">@android:color/transparent</item>
-</style>
+</style>-->
+
+
 </resources>

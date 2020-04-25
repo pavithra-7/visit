@@ -1,6 +1,8 @@
 package com.example.visit.adapters;
 
 import android.content.Context;
+import android.content.Intent;
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,14 +15,18 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.visit.R;
+import com.example.visit.activity.UpdateDepartment;
 import com.example.visit.model.DepartmentModel;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+
+import static android.media.CamcorderProfile.get;
 
 public class DepartmentListAdapter extends RecyclerView.Adapter<DepartmentListAdapter.MyViewHolder> implements Filterable{
 
@@ -28,6 +34,7 @@ public class DepartmentListAdapter extends RecyclerView.Adapter<DepartmentListAd
     private List<DepartmentModel> departmentModelList;
     private List<DepartmentModel> departmentModelListFull;
     private Context context;
+    private DatabaseReference myref;
 
     public DepartmentListAdapter(List<DepartmentModel> departmentModelList, Context context) {
         this.departmentModelList = departmentModelList;
@@ -118,7 +125,19 @@ public class DepartmentListAdapter extends RecyclerView.Adapter<DepartmentListAd
         holder.btnEdit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                Bundle bundle = new Bundle();
+                bundle.putString("deptID",Integer.toString(departmentModel.getDepID()));
+                bundle.putString("deptName",departmentModel.getDepName());
+                bundle.putString("deptEmail",departmentModel.getDepMail());
+                bundle.putString("deptCode",departmentModel.getDepCode());
+                bundle.putString("deptPhone",departmentModel.getDepPhone());
+                bundle.putString("deptPwd",departmentModel.getDepPassword());
+                bundle.putString("deptHod",departmentModel.getHeadofdep());
+                bundle.putString("deptHeadEmail",departmentModel.getHeadEmail());
+                bundle.putString("deptHeadPhone",departmentModel.getHeadPhone());
+                Intent intent = new Intent(context, UpdateDepartment.class);
+                intent.putExtras(bundle);
+                context.startActivity(intent);
             }
         });
 
@@ -126,6 +145,8 @@ public class DepartmentListAdapter extends RecyclerView.Adapter<DepartmentListAd
             @Override
             public void onClick(View view) {
 
+                String deptName = departmentModel.getDepName();
+                removeAt(position,deptName);
             }
         });
     }
@@ -133,6 +154,15 @@ public class DepartmentListAdapter extends RecyclerView.Adapter<DepartmentListAd
     @Override
     public int getItemCount() {
         return departmentModelListFull.size();
+    }
+
+    public void removeAt(int position,String deptName) {
+        myref = FirebaseDatabase.getInstance().getReference("DepartmentDetails");
+        DepartmentModel model = departmentModelListFull.get(position);
+        departmentModelListFull.remove(position);
+        notifyItemRemoved(position);
+        notifyItemRangeChanged(position, departmentModelList.size());
+        myref.child(deptName).removeValue();
     }
 
 

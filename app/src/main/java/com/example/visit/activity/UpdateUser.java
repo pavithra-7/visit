@@ -1,24 +1,18 @@
 package com.example.visit.activity;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+
 import android.os.Bundle;
-import android.util.Log;
 import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-
 import com.example.visit.R;
-import com.example.visit.model.DepartmentModel;
 import com.example.visit.model.UsersModel;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.android.material.textfield.TextInputEditText;
-import com.google.firebase.auth.AuthResult;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
@@ -28,7 +22,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class CreateUserActivity extends AppCompatActivity {
+public class UpdateUser extends AppCompatActivity {
 
     @BindView(R.id.imgProfile)
     ImageView imgProfile;
@@ -59,12 +53,31 @@ public class CreateUserActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_create_user);
+        setContentView(R.layout.activity_update_user);
+
         ButterKnife.bind(this);
         Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setTitle("Create User");
+        getSupportActionBar().setTitle("Update User");
 
         databaseReference = FirebaseDatabase.getInstance().getReference("UserDetails");
+
+        Bundle bundle = getIntent().getExtras();
+        assert bundle!=null;
+        String uName = bundle.getString("userName");
+        String uEmail = bundle.getString("userEmail");
+        String uContact = bundle.getString("userContact");
+        String uWhomToMeet = bundle.getString("userWhomToMeet");
+        String uPurposeToMeet = bundle.getString("userPurposeToMeet");
+        String uAddress = bundle.getString("userAddress");
+
+        etName.setText(uName);
+        etEmail.setText(uEmail);
+        etPhone.setText(uContact);
+        etWhomtomeet.setText(uWhomToMeet);
+        etPurposetomeet.setText(uPurposeToMeet);
+        etAddress.setText(uAddress);
+
+
     }
 
     @OnClick(R.id.btnSubmit)
@@ -74,6 +87,7 @@ public class CreateUserActivity extends AppCompatActivity {
 
 
     public void next() {
+
 
         String emailPattern = "[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+";
 
@@ -93,7 +107,7 @@ public class CreateUserActivity extends AppCompatActivity {
         } else if(email.isEmpty()) {
             etEmail.setError("Please enter Email ID");
         } else if(!emailPattern.matches(email)) {
-            etEmail.setError("Please enter Valid Email ID");
+             etEmail.setError("Please enter Valid Email ID");
         }else if(phone.length()!=10) {
             etPhone.setError("Please enter Phone");
         } else if(whomToMeet.isEmpty()) {
@@ -106,8 +120,7 @@ public class CreateUserActivity extends AppCompatActivity {
 
             UsersModel usersModel = new UsersModel(name, email, phone, whomToMeet, purposeToMeet, address, state, city, district, imagePath);
             databaseReference.child(name).setValue(usersModel);
-            Toast.makeText(CreateUserActivity.this, "Added Successfully", Toast.LENGTH_SHORT).show();
-
+            Toast.makeText(UpdateUser.this, "Updated Successfully", Toast.LENGTH_SHORT).show();
         }
 
 
@@ -120,6 +133,4 @@ public class CreateUserActivity extends AppCompatActivity {
         }
         return super.onOptionsItemSelected(item);
     }
-
-
 }

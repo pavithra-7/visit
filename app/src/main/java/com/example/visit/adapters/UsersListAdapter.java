@@ -1,6 +1,8 @@
 package com.example.visit.adapters;
 
 import android.content.Context;
+import android.content.Intent;
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,7 +15,10 @@ import android.widget.TextView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.visit.R;
+import com.example.visit.activity.UpdateUser;
 import com.example.visit.model.UsersModel;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,6 +33,7 @@ public class UsersListAdapter extends RecyclerView.Adapter<UsersListAdapter.MyVi
     private List<UsersModel> userModelList;
     private List<UsersModel> userModelListFull;
     private Context context;
+    private DatabaseReference myref;
 
     public UsersListAdapter(List<UsersModel> userModelList, Context context) {
         this.userModelList = userModelList;
@@ -112,15 +118,25 @@ public class UsersListAdapter extends RecyclerView.Adapter<UsersListAdapter.MyVi
     @Override
     public void onBindViewHolder(MyViewHolder holder, int position) {
         UsersModel userModel = userModelListFull.get(position);
-        holder.txtDepId.setText(userModel.getUserId());
-        holder.txtName.setText(userModel.getName());
-        holder.txtEmail.setText(userModel.getEmail());
-        holder.txtPhone.setText(userModel.getPhone());
-        holder.txtmeetTo.setText(userModel.getWhomToMeet());
+        holder.txtDepId.setText("User ID:  "+userModel.getUserId());
+        holder.txtName.setText("Name:  "+userModel.getName());
+        holder.txtEmail.setText("Email:  "+userModel.getEmail());
+        holder.txtPhone.setText("Phone: "+userModel.getPhone());
+        holder.txtmeetTo.setText("Whom to Meet: "+ userModel.getWhomToMeet());
 
         holder.btnEdit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                Bundle bundle = new Bundle();
+                bundle.putString("userName",userModel.getName());
+                bundle.putString("userEmail",userModel.getEmail());
+                bundle.putString("userContact",userModel.getPhone());
+                bundle.putString("userWhomToMeet",userModel.getWhomToMeet());
+                bundle.putString("userPurposeToMeet",userModel.getPurposeToMeet());
+                bundle.putString("userAddress",userModel.getAddress());
+                Intent intent = new Intent(context, UpdateUser.class);
+                intent.putExtras(bundle);
+                context.startActivity(intent);
 
             }
         });
@@ -128,7 +144,8 @@ public class UsersListAdapter extends RecyclerView.Adapter<UsersListAdapter.MyVi
         holder.btnDelete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                String userName = userModel.getName();
+                removeAt(position,userName);
             }
         });
         holder.btnCheckout.setOnClickListener(new View.OnClickListener() {
@@ -142,6 +159,14 @@ public class UsersListAdapter extends RecyclerView.Adapter<UsersListAdapter.MyVi
     @Override
     public int getItemCount() {
         return userModelListFull.size();
+    }
+
+    public void removeAt(int position,String userName) {
+        myref = FirebaseDatabase.getInstance().getReference("UserDetails");
+        userModelListFull.remove(position);
+        notifyItemRemoved(position);
+        notifyItemRangeChanged(position, userModelList.size());
+        myref.child(userName).removeValue();
     }
 
 

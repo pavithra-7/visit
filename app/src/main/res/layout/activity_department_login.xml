@@ -29,8 +29,8 @@
         <com.google.android.material.textfield.TextInputEditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Email"
-            android:id="@+id/etEmail"
+            android:hint="User ID"
+            android:id="@+id/etUserId"
             android:inputType="textEmailAddress"/>
 
 

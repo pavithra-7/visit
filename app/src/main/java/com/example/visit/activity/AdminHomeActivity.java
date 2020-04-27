@@ -32,6 +32,8 @@ public class AdminHomeActivity extends AppCompatActivity {
     Button btnUsersList;
     @BindView(R.id.btnUsersGraph)
     Button btnUsersGraph;
+    @BindView(R.id.btnRegister)
+    Button btnRegister;
 
     MyAppPrefsManager myAppPrefsManager;
     @Override
@@ -57,6 +59,11 @@ public class AdminHomeActivity extends AppCompatActivity {
                 startActivity(new Intent(AdminHomeActivity.this, UserListActivity.class));
                 break;
             case R.id.btnUsersGraph:
+                break;
+            case R.id.btnRegister:
+                Intent intent = new Intent(AdminHomeActivity.this, RegistrationActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intent);
                 break;
         }
     }

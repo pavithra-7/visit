@@ -19,6 +19,7 @@
         android:layout_marginTop="16dp"
         android:background="@drawable/radio_flat_selected"/>
 
+
     <Button
         android:id="@+id/btnDepartmentList"
         android:layout_width="match_parent"
@@ -46,5 +47,13 @@
         android:layout_marginTop="16dp"
         android:background="@drawable/radio_flat_regular"/>
 
+    <Button
+        android:id="@+id/btnRegister"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:text="Add Master Data"
+        android:textColor="@color/colorWhite"
+        android:background="@color/colorAccent"/>
 
 </LinearLayout>

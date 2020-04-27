@@ -6,11 +6,15 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.visit.R;
+import com.example.visit.utils.ConstantValues;
+import com.example.visit.utils.MyAppPrefsManager;
+import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.Objects;
 
@@ -28,6 +32,7 @@ public class DepartmentHomeActivity extends AppCompatActivity {
     Button btnGraph;
     @BindView(R.id.btnCheckout)
     Button btnCheckout;
+    MyAppPrefsManager myAppPrefsManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,6 +40,7 @@ public class DepartmentHomeActivity extends AppCompatActivity {
         setContentView(R.layout.activity_department_home);
         ButterKnife.bind(this);
         Objects.requireNonNull(getSupportActionBar()).setTitle("Department Home Page");
+        myAppPrefsManager=new MyAppPrefsManager(DepartmentHomeActivity.this);
     }
 
     @OnClick({R.id.btnCreateUser, R.id.btnUserList, R.id.btnGraph, R.id.btnCheckout})
@@ -64,8 +70,16 @@ public class DepartmentHomeActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()){
             case R.id.actionLogout:
-                Intent intent = new Intent(this, HomeActivity.class);
+                Toast.makeText(this, "Logout Successfully", Toast.LENGTH_SHORT).show();
+                FirebaseAuth.getInstance().signOut();
+                myAppPrefsManager.setAdminLoggedIn(false);
+                ConstantValues.IS_USER_LOGGED_IN_DEPARTMENT = myAppPrefsManager.isDepartmentLoggedIn();
+                Intent intent = new Intent(DepartmentHomeActivity.this, DepartmentLoginActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent);
+                break;
+            case android.R.id.home:
+                onBackPressed();
                 break;
         }
         return super.onOptionsItemSelected(item);

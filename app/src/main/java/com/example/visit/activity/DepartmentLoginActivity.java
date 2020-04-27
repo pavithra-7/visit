@@ -105,9 +105,10 @@ public class DepartmentLoginActivity extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 if(dataSnapshot.exists()) {
                     for(DataSnapshot dataSnapshot1 :dataSnapshot.getChildren()) {
-                        String dbPassword = dataSnapshot1.getValue(DepartmentModel.class).getDepPassword();
+                        String dbPassword = Objects.requireNonNull(dataSnapshot1.getValue(DepartmentModel.class)).getDepPassword();
                         if(dbPassword.equals(password)) {
                             progressDialog.dismiss();
+                            myAppPrefsManager.setDepartmentLoggedIn(true);
                             Toast.makeText(DepartmentLoginActivity.this, "Success", Toast.LENGTH_SHORT).show();
                             Intent intent = new Intent(DepartmentLoginActivity.this,DepartmentHomeActivity.class);
                             intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_CLEAR_TOP);
@@ -129,45 +130,14 @@ public class DepartmentLoginActivity extends AppCompatActivity {
             }
         });
 
-       /* mAuth.signInWithEmailAndPassword(, password)
-                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if (!task.isSuccessful()) {
 
-                            progressDialog.dismiss();
-                            Toast.makeText(DepartmentLoginActivity.this, "Please Enter Valid Email/Password", Toast.LENGTH_SHORT).show();
-
-
-                        } else {
-                            progressDialog.dismiss();
-                            Toast.makeText(DepartmentLoginActivity.this, "Login Successfully", Toast.LENGTH_SHORT).show();
-                            myAppPrefsManager.setDepartmentLoggedIn(true);
-                            ConstantValues.IS_USER_LOGGED_IN_DEPARTMENT = myAppPrefsManager.isDepartmentLoggedIn();
-                            Intent intent = new Intent(DepartmentLoginActivity.this, DepartmentHomeActivity.class);
-                            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                            intent.putExtra("email", email);
-                            startActivity(intent);
-
-                        }
-
-
-                    }
-                });*/
 
 
 
     }
 
 
-    private boolean isValidEmail(String email) {
-        String EMAIL_PATTERN = "^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@"
-                + "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
 
-        Pattern pattern = Pattern.compile(EMAIL_PATTERN);
-        Matcher matcher = pattern.matcher(email);
-        return matcher.matches();
-    }
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {

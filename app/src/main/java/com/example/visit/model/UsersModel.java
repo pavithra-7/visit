@@ -6,6 +6,7 @@ public class UsersModel {
 
     private static final AtomicInteger count = new AtomicInteger(0);
     private int userId;
+    private String imageId;
     private String name;
     private String  email;
     private String phone;
@@ -15,15 +16,16 @@ public class UsersModel {
     private String state;
     private String city;
     private String district;
-    private String imagePath;
+    private String imageUrl;
 
 
     public UsersModel() {
     }
 
 
-    public UsersModel(String name, String email, String phone, String whomToMeet, String purposeToMeet, String address, String state, String city, String district, String imagePath) {
+    public UsersModel(String imageUrl,String imageId,String name, String email, String phone, String whomToMeet, String purposeToMeet, String address, String state, String city, String district) {
         userId = count.incrementAndGet();
+        this.imageId = imageId;
         this.name = name;
         this.email = email;
         this.phone = phone;
@@ -33,10 +35,17 @@ public class UsersModel {
         this.state = state;
         this.city = city;
         this.district = district;
-        this.imagePath = imagePath;
+        this.imageUrl = imageUrl;
     }
 
 
+    public String getImageId() {
+        return imageId;
+    }
+
+    public void setImageId(String imageId) {
+        this.imageId = imageId;
+    }
 
     public int getUserId() {
         return userId;
@@ -118,11 +127,11 @@ public class UsersModel {
         this.district = district;
     }
 
-    public String getImagePath() {
-        return imagePath;
+    public String getImageUrl() {
+        return imageUrl;
     }
 
-    public void setImagePath(String imagePath) {
-        this.imagePath = imagePath;
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
     }
 }

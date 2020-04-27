@@ -118,9 +118,9 @@ public class UpdateUser extends AppCompatActivity {
             etAddress.setError("Please enter Address");
         } else {
 
-            UsersModel usersModel = new UsersModel(name, email, phone, whomToMeet, purposeToMeet, address, state, city, district, imagePath);
+            /*UsersModel usersModel = new UsersModel(name, email, phone, whomToMeet, purposeToMeet, address, state, city, district, imagePath);
             databaseReference.child(name).setValue(usersModel);
-            Toast.makeText(UpdateUser.this, "Updated Successfully", Toast.LENGTH_SHORT).show();
+            Toast.makeText(UpdateUser.this, "Updated Successfully", Toast.LENGTH_SHORT).show();*/
         }
 
 

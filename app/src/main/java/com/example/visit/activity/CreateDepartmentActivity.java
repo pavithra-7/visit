@@ -98,7 +98,7 @@ public class CreateDepartmentActivity extends AppCompatActivity {
             etDepartmentName.setError("Please enter Department Name");
         } else if (deptEmail.isEmpty()) {
             etDepartmentEmail.setError("Please enter Department Email ID");
-        } else if (!emailPattern.matches(deptEmail)) {
+        } else if (emailPattern.matches(deptEmail)) {
             etDepartmentEmail.setError("Please enter Valid Department Email");
         } else if (deptPhone.isEmpty()) {
             etDepartmentPhone.setError("Please enter Department Phone");

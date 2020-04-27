@@ -121,18 +121,21 @@
             android:id="@+id/spinstate"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:spinnerMode="dialog"
             android:layout_marginTop="10dp" />
 
         <Spinner
             android:id="@+id/spinDistrict"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:spinnerMode="dialog"
             android:layout_marginTop="10dp" />
 
         <Spinner
             android:id="@+id/spinCity"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:spinnerMode="dialog"
             android:layout_marginTop="10dp" />
 
 

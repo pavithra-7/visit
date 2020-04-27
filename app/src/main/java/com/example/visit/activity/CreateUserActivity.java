@@ -94,7 +94,7 @@ public class CreateUserActivity extends AppCompatActivity {
         databaseReferenceCity = FirebaseDatabase.getInstance().getReference().child("City_Details");
 
         // Retrieving State Name
-        databaseReference.addValueEventListener(new ValueEventListener() {
+        databaseReferenceState.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 if (dataSnapshot.exists()) {

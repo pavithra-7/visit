@@ -45,7 +45,7 @@ public class AdminHomeActivity extends AppCompatActivity {
         Objects.requireNonNull(getSupportActionBar()).setTitle("Admin Home Page");
     }
 
-    @OnClick({R.id.btnCreateDepartment, R.id.btnDepartmentList, R.id.btnUsersList, R.id.btnUsersGraph})
+    @OnClick({R.id.btnCreateDepartment, R.id.btnDepartmentList, R.id.btnUsersList, R.id.btnUsersGraph,R.id.btnRegister})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.btnCreateDepartment:

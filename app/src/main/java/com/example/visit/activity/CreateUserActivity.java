@@ -2,11 +2,13 @@ package com.example.visit.activity;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
@@ -21,7 +23,6 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.FileProvider;
 
@@ -279,7 +280,7 @@ public class CreateUserActivity extends AppCompatActivity {
         } else {
 
             StorageReference ref = storageReference.child("Images/" + imageId);
-            ref.putFile(selectedImage).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+            ref.putFile(Uri.fromFile(mPhotoFile)).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                 @Override
                 public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
 
@@ -340,7 +341,7 @@ public class CreateUserActivity extends AppCompatActivity {
                 selectImage();
                 break;
             case R.id.btnSubmit:
-                if (selectedImage == null) {
+                if (mPhotoFile == null) {
                     Toast.makeText(CreateUserActivity.this, "Please select Image", Toast.LENGTH_SHORT).show();
                 } else {
                     next();
@@ -353,16 +354,16 @@ public class CreateUserActivity extends AppCompatActivity {
      * Alert dialog for capture or select from galley
      */
     private void selectImage() {
-        final CharSequence[] items = {
-                "Take Photo", "Choose from Library",
-                "Cancel"
-        };
-        AlertDialog.Builder builder = new AlertDialog.Builder(CreateUserActivity.this);
+        final CharSequence[] items = {"Take Photo", "Choose from Library",
+                "Cancel"};
+        android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(CreateUserActivity.this);
         builder.setItems(items, (dialog, item) -> {
             if (items[item].equals("Take Photo")) {
                 requestStoragePermission(true);
             } else if (items[item].equals("Choose from Library")) {
-                requestStoragePermission(false);
+                if(Build.VERSION.SDK_INT>22){
+                    requestStoragePermission(false);
+                }
             } else if (items[item].equals("Cancel")) {
                 dialog.dismiss();
             }
@@ -385,7 +386,7 @@ public class CreateUserActivity extends AppCompatActivity {
                 // Error occurred while creating the File
             }
             if (photoFile != null) {
-                Uri photoURI = FileProvider.getUriForFile(this,
+                Uri photoURI = FileProvider.getUriForFile(CreateUserActivity.this,
                         BuildConfig.APPLICATION_ID + ".provider",
                         photoFile);
 
@@ -393,10 +394,10 @@ public class CreateUserActivity extends AppCompatActivity {
                 takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
                 startActivityForResult(takePictureIntent, REQUEST_TAKE_PHOTO);
 
-
             }
         }
     }
+
 
     /**
      * Select image fro gallery
@@ -408,58 +409,27 @@ public class CreateUserActivity extends AppCompatActivity {
         startActivityForResult(pickPhoto, REQUEST_GALLERY_PHOTO);
     }
 
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == RESULT_OK) {
             if (requestCode == REQUEST_TAKE_PHOTO) {
                 try {
-                    Bundle extras = data.getExtras();
-                    assert extras != null;
-                    photo = (Bitmap) extras.get("data");
-
-                    @SuppressLint("SimpleDateFormat")
-                    String timeStamp = new SimpleDateFormat("yyyyMMddHHmmss").format(new Date());
-                    String mFileName = "JPEG_" + timeStamp + "_";
-                    File storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
-                    File mFile = File.createTempFile(mFileName, ".jpg", storageDir);
-
-
-                    Bitmap bitmap = photo;
-                    ByteArrayOutputStream bos = new ByteArrayOutputStream();
-                    bitmap.compress(Bitmap.CompressFormat.JPEG, 100, bos);
-                    byte[] bitmapdata = bos.toByteArray();
-
-                    FileOutputStream fos = new FileOutputStream(mFile);
-                    fos.write(bitmapdata);
-                    fos.flush();
-                    fos.close();
-
-                    selectedImage = Uri.fromFile(mFile);
-                    mPhotoFile = mCompressor.compressToFile(new File(getRealPathFromUri(selectedImage)));
-
+                    mPhotoFile = mCompressor.compressToFile(mPhotoFile);
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-                Glide.with(CreateUserActivity.this)
-                        .load(mPhotoFile)
-                        .apply(new RequestOptions().centerCrop()
-                                .circleCrop()
-                                .placeholder(R.drawable.ic_add_a_photo_black_24dp))
-                        .into(imgProfile);
+                Glide.with(CreateUserActivity.this).load(mPhotoFile).apply(new RequestOptions().centerCrop().circleCrop().placeholder(R.drawable.ic_add_a_photo_black_24dp)).into(imgProfile);
             } else if (requestCode == REQUEST_GALLERY_PHOTO) {
+                Uri selectedImage = data.getData();
                 try {
-                    selectedImage = data.getData();
                     mPhotoFile = mCompressor.compressToFile(new File(getRealPathFromUri(selectedImage)));
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-                Glide.with(CreateUserActivity.this)
-                        .load(mPhotoFile)
-                        .apply(new RequestOptions().centerCrop()
-                                .circleCrop()
-                                .placeholder(R.drawable.ic_add_a_photo_black_24dp))
-                        .into(imgProfile);
+                Glide.with(CreateUserActivity.this).load(mPhotoFile).apply(new RequestOptions().centerCrop().circleCrop().placeholder(R.drawable.ic_add_a_photo_black_24dp)).into(imgProfile);
+
             }
         }
     }
@@ -470,9 +440,7 @@ public class CreateUserActivity extends AppCompatActivity {
      * On permanent denial opens settings dialog
      */
     private void requestStoragePermission(boolean isCamera) {
-        Dexter.withActivity(CreateUserActivity.this)
-                .withPermissions(Manifest.permission.READ_EXTERNAL_STORAGE,
-                        Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.CAMERA)
+        Dexter.withActivity(this).withPermissions(Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.CAMERA)
                 .withListener(new MultiplePermissionsListener() {
                     @Override
                     public void onPermissionsChecked(MultiplePermissionsReport report) {
@@ -495,15 +463,11 @@ public class CreateUserActivity extends AppCompatActivity {
                     public void onPermissionRationaleShouldBeShown(List<PermissionRequest> permissions, PermissionToken token) {
                         token.continuePermissionRequest();
                     }
-
-
-                })
-                .withErrorListener(
-                        error -> Toast.makeText(getApplicationContext(), "Error occurred! ", Toast.LENGTH_SHORT)
-                                .show())
+                }).withErrorListener(error -> Toast.makeText(getApplicationContext(), "Error occurred! ", Toast.LENGTH_SHORT).show())
                 .onSameThread()
                 .check();
     }
+
 
     /**
      * Showing Alert Dialog with Settings option
@@ -511,16 +475,16 @@ public class CreateUserActivity extends AppCompatActivity {
      * NOTE: Keep proper title and message depending on your app
      */
     private void showSettingsDialog() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(CreateUserActivity.this);
+        android.app.AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("Need Permissions");
-        builder.setMessage(
-                "This app needs permission to use this feature. You can grant them in app settings.");
+        builder.setMessage("This app needs permission to use this feature. You can grant them in app settings.");
         builder.setPositiveButton("GOTO SETTINGS", (dialog, which) -> {
             dialog.cancel();
             openSettings();
         });
         builder.setNegativeButton("Cancel", (dialog, which) -> dialog.cancel());
         builder.show();
+
     }
 
     // navigating user to app settings
@@ -534,11 +498,11 @@ public class CreateUserActivity extends AppCompatActivity {
     /**
      * Create file with current timestamp name
      *
+     * @return
      * @throws IOException
      */
     private File createImageFile() throws IOException {
         // Create an image file name
-        @SuppressLint("SimpleDateFormat")
         String timeStamp = new SimpleDateFormat("yyyyMMddHHmmss").format(new Date());
         String mFileName = "JPEG_" + timeStamp + "_";
         File storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
@@ -548,6 +512,9 @@ public class CreateUserActivity extends AppCompatActivity {
 
     /**
      * Get real file path from URI
+     *
+     * @param contentUri
+     * @return
      */
     public String getRealPathFromUri(Uri contentUri) {
         Cursor cursor = null;

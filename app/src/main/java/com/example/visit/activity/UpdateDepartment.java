@@ -3,6 +3,7 @@ package com.example.visit.activity;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
@@ -140,15 +141,38 @@ public class UpdateDepartment extends AppCompatActivity {
 
         } else {
 
-            //databaseReference.child(deptName).child("depName").setValue(deptName);
+            String firstThreeChars = "";     //substring containing first 3 characters
+
+            if (deptName.length() > 3) {
+                firstThreeChars = deptName.substring(0, 3);
+            } else {
+                firstThreeChars = deptName;
+            }
+
+            String lastThreeDigits = "";     //substring containing last 3 characters
+
+            if (deptPhone.length() > 3) {
+                lastThreeDigits = deptPhone.substring(deptPhone.length() - 3);
+            } else {
+                lastThreeDigits = deptPhone;
+            }
+            deptCode = (firstThreeChars + "_" + lastThreeDigits).toUpperCase();
+
+           /* databaseReference.child(deptName).child("depName").setValue(deptName);
             databaseReference.child(deptName).child("depMail").setValue(deptEmail);
             databaseReference.child(deptName).child("depPhone").setValue(deptPhone);
             databaseReference.child(deptName).child("depPassword").setValue(deptPassword);
             databaseReference.child(deptName).child("headofdep").setValue(deptHeadName);
             databaseReference.child(deptName).child("headEmail").setValue(deptHeadEmail);
-            databaseReference.child(deptName).child("headPhone").setValue(deptHeadPhone);
+            databaseReference.child(deptName).child("headPhone").setValue(deptHeadPhone);*/
+
+            DepartmentModel departmentModel = new DepartmentModel(deptName, deptEmail, deptPassword, deptPhone, deptCode, deptHeadName, deptHeadEmail, deptHeadPhone);
+            databaseReference.child(deptName).setValue(departmentModel);
 
             Toast.makeText(this, "Details Updated Successfully !", Toast.LENGTH_SHORT).show();
+            Intent intent = new Intent(UpdateDepartment.this, AdminHomeActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            startActivity(intent);
 
         }
     }

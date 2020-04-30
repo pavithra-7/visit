@@ -99,21 +99,18 @@ public class CreateUserActivity extends AppCompatActivity {
     @BindView(R.id.btnSubmit)
     Button btnSubmit;
     DatabaseReference databaseReference;
-    DatabaseReference databaseReferenceState;
-    DatabaseReference databaseReferenceDistrict;
-    DatabaseReference databaseReferenceCity;
-
+   
     String name, email, phone, whomToMeet, purposeToMeet, address, state, city, district;
-    ArrayList<String> stateList, districtList, cityList;
 
     ProgressDialog progressDialog, regProgress;
     StorageReference storageReference;
-    Uri selectedImage;
-    Bitmap photo;
+   
 
     String currentDate;
     String currentTime;
 
+    DatabaseReference  myRefStates, myRefDistricts, myRefCities;
+    ArrayList<String> stateNameList, districtNameList, cityNameList;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -129,119 +126,134 @@ public class CreateUserActivity extends AppCompatActivity {
 
         currentTime = new SimpleDateFormat("hh:mm:sss", Locale.getDefault()).format(new Date());
 
-        stateList = new ArrayList<String>();
-        stateList.add("Select State Name");
+        stateNameList = new ArrayList<String>();
 
-        districtList = new ArrayList<>();
-        districtList.add("Select District Name");
-
-        cityList = new ArrayList<>();
-        cityList.add("Select City Name");
-
-        databaseReference = FirebaseDatabase.getInstance().getReference("UserDetails");
-        databaseReferenceState = FirebaseDatabase.getInstance().getReference("State_Details");
-        databaseReferenceDistrict = FirebaseDatabase.getInstance().getReference("District_Details");
-        databaseReferenceCity = FirebaseDatabase.getInstance().getReference().child("City_Details");
+        districtNameList = new ArrayList<String>();
+        cityNameList = new ArrayList<String>();
 
         regProgress = new ProgressDialog(CreateUserActivity.this);
-        // Retrieving State Name
-        databaseReferenceState.addValueEventListener(new ValueEventListener() {
+        progressDialog = new ProgressDialog(CreateUserActivity.this);
+
+        progressDialog.show();
+        progressDialog.setCanceledOnTouchOutside(false);
+        progressDialog.setCancelable(false);
+        progressDialog.setMessage("Please Wait....");
+
+        databaseReference = FirebaseDatabase.getInstance().getReference("UserDetails");
+
+        myRefStates = FirebaseDatabase.getInstance().getReference("State_Details");
+        myRefDistricts = FirebaseDatabase.getInstance().getReference("District_Details");
+        myRefCities = FirebaseDatabase.getInstance().getReference().child("City_Details");
+
+
+        getStates();
+        getDistrict("");
+        getCity("");
+
+        
+       
+
+
+    }
+
+
+    public void getStates() {
+
+
+        myRefStates.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 if (dataSnapshot.exists()) {
-                    stateList.clear();
-                    stateList.add("Select State Name");
+                    stateNameList.clear();
+                    stateNameList.add("Select State");
                     for (DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()) {
                         String stateName = Objects.requireNonNull(dataSnapshot1.getValue(StateData.class)).getState();
-                        stateList.add(stateName);
+                        stateNameList.add(stateName);
                     }
 
-                    ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(CreateUserActivity.this, R.layout.support_simple_spinner_dropdown_item, stateList);
-                    arrayAdapter.setDropDownViewResource(R.layout.support_simple_spinner_dropdown_item);
-                    spinstate.setAdapter(arrayAdapter);
-
-                    //Retrieving State Code as per State Name
-                    spinstate.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-
-                        @Override
-                        public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-
-                            String selectedState = spinstate.getSelectedItem().toString();
-
-
-                            //Retrieving District Names based on State Selected
-                            Query query1 = databaseReferenceDistrict.orderByChild("state").equalTo(selectedState);
-                            query1.addValueEventListener(new ValueEventListener() {
-                                @Override
-                                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                                    if (dataSnapshot.exists()) {
-                                        districtList.clear();
-                                        districtList.add("Select District Name");
-                                        for (DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()) {
-                                            String districtName = Objects.requireNonNull(dataSnapshot1.getValue(DistrictData.class)).getDistrictname();
-                                            districtList.add(districtName);
-                                        }
-
-                                        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(CreateUserActivity.this, R.layout.support_simple_spinner_dropdown_item, districtList);
-                                        arrayAdapter.setDropDownViewResource(R.layout.support_simple_spinner_dropdown_item);
-                                        spinDistrict.setAdapter(arrayAdapter);
-
-
-                                        spinDistrict.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-                                            @Override
-                                            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                                                String selectedDistrict = spinDistrict.getSelectedItem().toString();
-                                                Query query = databaseReferenceCity.orderByChild("district").equalTo(selectedDistrict);
-                                                query.addValueEventListener(new ValueEventListener() {
-                                                    @Override
-                                                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                                                        if (dataSnapshot.exists()) {
-                                                            cityList.clear();
-                                                            cityList.add("Select City Name");
-                                                            for (DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()) {
-                                                                String cityName = Objects.requireNonNull(dataSnapshot1.getValue(CityData.class)).getCity();
-                                                                cityList.add(cityName);
-                                                            }
-
-                                                            ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(CreateUserActivity.this, R.layout.support_simple_spinner_dropdown_item, cityList);
-                                                            arrayAdapter.setDropDownViewResource(R.layout.support_simple_spinner_dropdown_item);
-                                                            spinCity.setAdapter(arrayAdapter);
-                                                        }
-                                                    }
-
-                                                    @Override
-                                                    public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                                                    }
-                                                });
-
-                                            }
-
-                                            @Override
-                                            public void onNothingSelected(AdapterView<?> parent) {
-
-                                            }
-                                        });
-
-                                    }
-                                }
-
-                                @Override
-                                public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                                }
-                            });
-
-
-                        }
-
-                        @Override
-                        public void onNothingSelected(AdapterView<?> parent) {
-
-                        }
-                    });
-
+                    progressDialog.dismiss();
+                }else {
+                    progressDialog.dismiss();
+                    stateNameList.clear();
+                    stateNameList.add("Select State");
                 }
+
+                ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(CreateUserActivity.this, R.layout.support_simple_spinner_dropdown_item, stateNameList);
+                arrayAdapter.setDropDownViewResource(R.layout.support_simple_spinner_dropdown_item);
+                spinstate.setAdapter(arrayAdapter);
+
+
+                spinstate.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+
+                    @Override
+                    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+
+                        state = spinstate.getSelectedItem().toString();
+
+                        getDistrict(state);
+
+
+                    }
+
+                    @Override
+                    public void onNothingSelected(AdapterView<?> parent) {
+
+                        getDistrict("");
+                    }
+                });
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+    }
+
+    public void getDistrict(String selectedState) {
+
+
+
+        //Retrieving District Names based on State Selected
+        Query query1 = myRefDistricts.orderByChild("state").equalTo(selectedState);
+        query1.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if (dataSnapshot.exists()) {
+                    districtNameList.clear();
+                    districtNameList.add("Select District");
+                    for (DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()) {
+                        String districtName = Objects.requireNonNull(dataSnapshot1.getValue(DistrictData.class)).getDistrictname();
+                        districtNameList.add(districtName);
+                    }
+
+                }else {
+                    districtNameList.clear();
+                    districtNameList.add("Select District");
+                }
+
+                ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(CreateUserActivity.this, R.layout.support_simple_spinner_dropdown_item, districtNameList);
+                arrayAdapter.setDropDownViewResource(R.layout.support_simple_spinner_dropdown_item);
+                spinDistrict.setAdapter(arrayAdapter);
+
+                //Retrieving Mandal Name as per District Name
+                spinDistrict.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+
+                    @Override
+                    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+
+                        district = spinDistrict.getSelectedItem().toString();
+
+                        getCity(district);
+
+                    }
+
+                    @Override
+                    public void onNothingSelected(AdapterView<?> parent) {
+
+                        getCity("");
+                    }
+                });
             }
 
             @Override
@@ -253,6 +265,51 @@ public class CreateUserActivity extends AppCompatActivity {
 
     }
 
+    public void getCity(String selectedDistrict) {
+
+        Query query = myRefCities.orderByChild("district").equalTo(selectedDistrict);
+        query.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if (dataSnapshot.exists()) {
+                    cityNameList.clear();
+                    cityNameList.add("Select City");
+                    for (DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()) {
+                        String city = Objects.requireNonNull(dataSnapshot1.getValue(CityData.class)).getCity();
+                        cityNameList.add(city);
+                    }
+
+
+                }
+                else {
+                    cityNameList.clear();
+                    cityNameList.add("Select City");
+                }
+
+                ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(CreateUserActivity.this, R.layout.support_simple_spinner_dropdown_item, cityNameList);
+                arrayAdapter.setDropDownViewResource(R.layout.support_simple_spinner_dropdown_item);
+                spinCity.setAdapter(arrayAdapter);
+
+                spinCity.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                    @Override
+                    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                        city = spinCity.getSelectedItem().toString();
+                    }
+
+                    @Override
+                    public void onNothingSelected(AdapterView<?> parent) {
+
+                    }
+                });
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
+    }
 
     public void next() {
 
@@ -266,9 +323,6 @@ public class CreateUserActivity extends AppCompatActivity {
         whomToMeet = Objects.requireNonNull(etWhomtomeet.getText()).toString().trim();
         purposeToMeet = Objects.requireNonNull(etPurposetomeet.getText()).toString().trim();
         address = Objects.requireNonNull(etAddress.getText()).toString().trim();
-        state = spinstate.getSelectedItem().toString().trim();
-        city = spinCity.getSelectedItem().toString().trim();
-        district = spinDistrict.getSelectedItem().toString().trim();
 
         String checkInTime=currentDate + " "+ currentTime;
         String checkOutTime="";

@@ -27,9 +27,6 @@
         tools:targetApi="m">
         <activity android:name=".activity.AdminUserListActivity"></activity>
         <activity
-            android:name=".activity.UpdateUser"
-            android:screenOrientation="portrait" />
-        <activity
             android:name=".activity.UpdateDepartment"
             android:screenOrientation="portrait" />
         <activity

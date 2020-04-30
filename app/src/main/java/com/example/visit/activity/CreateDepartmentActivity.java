@@ -95,21 +95,22 @@ public class CreateDepartmentActivity extends AppCompatActivity {
         deptHeadPhone = Objects.requireNonNull(etHodPhone.getText()).toString().trim();
 
         if (deptName.isEmpty()) {
-            etDepartmentName.setError("Please enter Department Name");
+            Toast.makeText(this, "Please enter Department Name", Toast.LENGTH_SHORT).show();
         } else if (deptEmail.isEmpty()) {
-            etDepartmentEmail.setError("Please enter Department Email ID");
+            Toast.makeText(this,"Please enter Department Email ID",Toast.LENGTH_SHORT).show();
         } else if (emailPattern.matches(deptEmail)) {
-            etDepartmentEmail.setError("Please enter Valid Department Email");
+            Toast.makeText(this,"Please enter Valid Department Email",Toast.LENGTH_SHORT).show();
         } else if (deptPhone.isEmpty()) {
-            etDepartmentPhone.setError("Please enter Department Phone");
+            Toast.makeText(this,"Please enter Department Phone",Toast.LENGTH_SHORT).show();
         } else if (deptPassword.isEmpty()) {
-            etDepartmentPassword.setError("Please enter Password");
+            Toast.makeText(this,"Please enter Password",Toast.LENGTH_SHORT).show();
         } else if (deptHeadName.isEmpty()) {
-            etHod.setError("Please enter HOD Name");
+            Toast.makeText(this,"Please enter HOD Name",Toast.LENGTH_SHORT).show();
         } else if (deptHeadEmail.isEmpty()) {
-            etHodEmail.setError("Please enter HOD Email");
+            Toast.makeText(this,"Please enter HOD Email",Toast.LENGTH_SHORT).show();
         } else if (deptHeadPhone.isEmpty()) {
-            etHodPhone.setError("Please enter HOD Phone");
+            Toast.makeText(this,"Please enter HOD Phone",Toast.LENGTH_SHORT).show();
+
         } else {
 
             String firstThreeChars = "";     //substring containing first 3 characters

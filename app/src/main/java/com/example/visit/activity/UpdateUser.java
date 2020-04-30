@@ -103,19 +103,26 @@ public class UpdateUser extends AppCompatActivity {
         imagePath="";
 
         if(name.isEmpty()) {
-            etName.setError("Please enter Name");
+            Toast.makeText(this,"Please enter Name",Toast.LENGTH_SHORT).show();
+
         } else if(email.isEmpty()) {
-            etEmail.setError("Please enter Email ID");
+            Toast.makeText(this,"Please enter Email ID",Toast.LENGTH_SHORT).show();
+
         } else if(!emailPattern.matches(email)) {
-             etEmail.setError("Please enter Valid Email ID");
+            Toast.makeText(this,"Please enter Valid Email ID",Toast.LENGTH_SHORT).show();
+
         }else if(phone.length()!=10) {
-            etPhone.setError("Please enter Phone");
+            Toast.makeText(this,"Please enter Phone",Toast.LENGTH_SHORT).show();
+
         } else if(whomToMeet.isEmpty()) {
-            etWhomtomeet.setError("Please enter Whom To Meet");
+            Toast.makeText(this,"Please enter Whom To Meet",Toast.LENGTH_SHORT).show();
+
         } else if(purposeToMeet.isEmpty()) {
-            etPurposetomeet.setError("Please enter Purpose to Meet");
+            Toast.makeText(this,"Please enter Purpose to Meet",Toast.LENGTH_SHORT).show();
+
         } else if(address.isEmpty()){
-            etAddress.setError("Please enter Address");
+            Toast.makeText(this,"Please enter Address",Toast.LENGTH_SHORT).show();
+
         } else {
 
             /*UsersModel usersModel = new UsersModel(name, email, phone, whomToMeet, purposeToMeet, address, state, city, district, imagePath);

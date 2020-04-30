@@ -118,7 +118,7 @@ public class UpdateDepartment extends AppCompatActivity {
         } else if (deptEmail.isEmpty()) {
             Toast.makeText(this,"Please enter Department Email ID",Toast.LENGTH_SHORT).show();
 
-        } else if (!emailPattern.matches(deptEmail)) {
+        } else if (emailPattern.matches(deptEmail)) {
             Toast.makeText(this,"Invalid Mail ID",Toast.LENGTH_SHORT).show();
 
         } else if (deptPhone.length() != 10) {

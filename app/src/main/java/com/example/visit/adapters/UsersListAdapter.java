@@ -135,7 +135,7 @@ public class UsersListAdapter extends RecyclerView.Adapter<UsersListAdapter.MyVi
         holder.txtmeetTo.setText("Whom to Meet: " + userModel.getWhomToMeet());
         holder.txtCheckInTime.setText("Check In Time" + userModel.getCheckInTime());
         holder.txtCheckOutTime.setText("Check Out Time: " + userModel.getCheckOutTime());
-        holder.txtCheckStatus.setText("Check Status " + userModel.getStatus());
+        holder.txtCheckStatus.setText("Check Status: " + userModel.getStatus());
 
         Glide.with(context).load(userModel.getImageUrl()).into(holder.imgProfile);
 
@@ -147,6 +147,12 @@ public class UsersListAdapter extends RecyclerView.Adapter<UsersListAdapter.MyVi
         checkOutTime = currentDate + " " + currentTime;
 
         myRef = FirebaseDatabase.getInstance().getReference("UserDetails");
+
+        if(userModel.getStatus().equalsIgnoreCase("Check-Out")){
+            holder.btnCheckout.setVisibility(View.GONE);
+        }else {
+            holder.btnCheckout.setVisibility(View.VISIBLE);
+        }
 
         holder.btnCheckout.setOnClickListener(view -> {
             AlertDialog.Builder alertbox = new AlertDialog.Builder(view.getRootView().getContext());

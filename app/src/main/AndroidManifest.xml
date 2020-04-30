@@ -3,17 +3,18 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.example.visit">
 
-
-
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.CAMERA" />
 
-    <uses-feature android:name="android.hardware.camera" android:required="false"/>
+    <uses-feature
+        android:name="android.hardware.camera"
+        android:required="false" />
     <uses-feature android:name="android.hardware.camera.autofocus" />
     <uses-feature android:name="android.hardware.camera.flash" />
 
     <uses-permission android:name="android.permission.INTERNET" />
+
     <application
         android:allowBackup="true"
         android:fullBackupContent="true"
@@ -24,6 +25,7 @@
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true"
         tools:targetApi="m">
+        <activity android:name=".activity.AdminUserListActivity"></activity>
         <activity
             android:name=".activity.UpdateUser"
             android:screenOrientation="portrait" />
@@ -38,13 +40,10 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".activity.UserListActivity"
-            android:screenOrientation="portrait" >
-
-        </activity>
+            android:screenOrientation="portrait"></activity>
         <activity
             android:name=".activity.DeaprtmentListActivity"
             android:screenOrientation="portrait">
-
 
             <!--
             <meta-data
@@ -69,7 +68,6 @@
         <activity
             android:name=".activity.AddCityActivity"
             android:screenOrientation="portrait" />
-
         <activity
             android:name=".activity.DepartmentLoginActivity"
             android:screenOrientation="portrait" />
@@ -94,6 +92,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
         <provider
             android:name="androidx.core.content.FileProvider"
             android:authorities="${applicationId}.provider"

@@ -1,9 +1,6 @@
 package com.example.visit.adapters;
 
 import android.content.Context;
-import android.content.DialogInterface;
-import android.content.Intent;
-import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,12 +10,10 @@ import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import androidx.appcompat.app.AlertDialog;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.visit.R;
-import com.example.visit.activity.UpdateUser;
 import com.example.visit.model.UsersModel;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
@@ -29,7 +24,7 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class UsersListAdapter extends RecyclerView.Adapter<UsersListAdapter.MyViewHolder> implements Filterable {
+public class AdminUsersListAdapter extends RecyclerView.Adapter<AdminUsersListAdapter.MyViewHolder> implements Filterable {
 
 
 
@@ -38,7 +33,7 @@ public class UsersListAdapter extends RecyclerView.Adapter<UsersListAdapter.MyVi
     private Context context;
     private DatabaseReference myref;
 
-    public UsersListAdapter(List<UsersModel> userModelList, Context context) {
+    public AdminUsersListAdapter(List<UsersModel> userModelList, Context context) {
         this.userModelList = userModelList;
         userModelListFull = userModelList;
         this.context = context;
@@ -96,12 +91,8 @@ public class UsersListAdapter extends RecyclerView.Adapter<UsersListAdapter.MyVi
         TextView txtPhone;
         @BindView(R.id.txtmeetTo)
         TextView txtmeetTo;
-       /* @BindView(R.id.btnEdit)
-        Button btnEdit;
-        @BindView(R.id.btnDelete)
-        Button btnDelete;*/
-        @BindView(R.id.btnCheckout)
-        Button btnCheckout;
+
+
 
         public MyViewHolder(View view) {
             super(view);
@@ -113,7 +104,7 @@ public class UsersListAdapter extends RecyclerView.Adapter<UsersListAdapter.MyVi
     @Override
     public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.user_list, parent, false);
+                .inflate(R.layout.admin_user_list, parent, false);
 
         return new MyViewHolder(itemView);
     }
@@ -129,48 +120,6 @@ public class UsersListAdapter extends RecyclerView.Adapter<UsersListAdapter.MyVi
 
         Glide.with(context).load(userModel.getImageUrl()).into(holder.imgProfile);
 
-       /* holder.btnEdit.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Bundle bundle = new Bundle();
-                bundle.putString("userName",userModel.getName());
-                bundle.putString("userEmail",userModel.getEmail());
-                bundle.putString("userContact",userModel.getPhone());
-                bundle.putString("userWhomToMeet",userModel.getWhomToMeet());
-                bundle.putString("userPurposeToMeet",userModel.getPurposeToMeet());
-                bundle.putString("userAddress",userModel.getAddress());
-                Intent intent = new Intent(context, UpdateUser.class);
-                intent.putExtras(bundle);
-                context.startActivity(intent);
-
-            }
-        });
-        holder.btnDelete.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                String userName = userModel.getName();
-                removeAt(position,userName);
-            }
-        });*/
-
-        holder.btnCheckout.setOnClickListener(view -> {
-            AlertDialog.Builder alertbox = new AlertDialog.Builder(view.getRootView().getContext());
-            alertbox.setMessage("Are you sure want to checkout this user?");
-            alertbox.setTitle("Checkout?");
-            alertbox.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialogInterface, int i) {
-
-                }
-            });
-            alertbox.setPositiveButton("ok", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialogInterface, int i) {
-
-                }
-            });
-            alertbox.show();
-        });
     }
 
     @Override

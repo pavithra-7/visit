@@ -38,13 +38,13 @@
         android:layout_marginTop="16dp"
         android:background="@drawable/radio_flat_selected"/>
 
-    <Button
+    <!--<Button
         android:id="@+id/btnCheckout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textColor="@color/colorPrimaryDark"
         android:text="checkout"
         android:layout_marginTop="16dp"
-        android:background="@drawable/radio_flat_regular"/>
+        android:background="@drawable/radio_flat_regular"/>-->
 
 </LinearLayout>

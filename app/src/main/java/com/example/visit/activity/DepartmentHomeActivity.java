@@ -30,8 +30,8 @@ public class DepartmentHomeActivity extends AppCompatActivity {
     Button btnUserList;
     @BindView(R.id.btnGraph)
     Button btnGraph;
-    @BindView(R.id.btnCheckout)
-    Button btnCheckout;
+   /* @BindView(R.id.btnCheckout)
+    Button btnCheckout;*/
     MyAppPrefsManager myAppPrefsManager;
 
     @Override
@@ -43,7 +43,7 @@ public class DepartmentHomeActivity extends AppCompatActivity {
         myAppPrefsManager=new MyAppPrefsManager(DepartmentHomeActivity.this);
     }
 
-    @OnClick({R.id.btnCreateUser, R.id.btnUserList, R.id.btnGraph, R.id.btnCheckout})
+    @OnClick({R.id.btnCreateUser, R.id.btnUserList, R.id.btnGraph})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.btnCreateUser:
@@ -54,8 +54,8 @@ public class DepartmentHomeActivity extends AppCompatActivity {
                 break;
             case R.id.btnGraph:
                 break;
-            case R.id.btnCheckout:
-                break;
+            /*case R.id.btnCheckout:
+                break;*/
         }
     }
 

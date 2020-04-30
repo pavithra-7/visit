@@ -74,16 +74,7 @@
                 </LinearLayout>
             </LinearLayout>
 
-            <Button
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/btnCheckout"
-                android:text="Checkout"
-                android:textColor="@color/colorAccent"
-                android:background="@drawable/rounde_corners"
-                android:layout_weight="1"
-                android:layout_marginTop="10dp"
-                />
+
 
 
         </LinearLayout>

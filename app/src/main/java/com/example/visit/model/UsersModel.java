@@ -17,13 +17,16 @@ public class UsersModel {
     private String city;
     private String district;
     private String imageUrl;
+    private String checkInTime;
+    private String checkOutTime;
+    private String status;
 
 
     public UsersModel() {
     }
 
 
-    public UsersModel(String imageUrl,String imageId,String name, String email, String phone, String whomToMeet, String purposeToMeet, String address, String state, String city, String district) {
+    public UsersModel(String imageUrl,String imageId,String name, String email, String phone, String whomToMeet, String purposeToMeet, String address, String state, String city, String district,String checkInTime,String checkOutTime,String status) {
         userId = count.incrementAndGet();
         this.imageId = imageId;
         this.name = name;
@@ -36,8 +39,35 @@ public class UsersModel {
         this.city = city;
         this.district = district;
         this.imageUrl = imageUrl;
+        this.checkInTime = checkInTime;
+        this.checkOutTime = checkOutTime;
+        this.status = status;
     }
 
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public String getCheckInTime() {
+        return checkInTime;
+    }
+
+    public void setCheckInTime(String checkInTime) {
+        this.checkInTime = checkInTime;
+    }
+
+    public String getCheckOutTime() {
+        return checkOutTime;
+    }
+
+    public void setCheckOutTime(String checkOutTime) {
+        this.checkOutTime = checkOutTime;
+    }
 
     public String getImageId() {
         return imageId;

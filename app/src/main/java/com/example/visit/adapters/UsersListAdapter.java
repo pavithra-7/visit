@@ -13,6 +13,7 @@ import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -23,8 +24,11 @@ import com.example.visit.model.UsersModel;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -32,11 +36,11 @@ import butterknife.ButterKnife;
 public class UsersListAdapter extends RecyclerView.Adapter<UsersListAdapter.MyViewHolder> implements Filterable {
 
 
-
     private List<UsersModel> userModelList;
     private List<UsersModel> userModelListFull;
     private Context context;
-    private DatabaseReference myref;
+    private DatabaseReference myRef;
+    private String checkOutTime;
 
     public UsersListAdapter(List<UsersModel> userModelList, Context context) {
         this.userModelList = userModelList;
@@ -96,20 +100,23 @@ public class UsersListAdapter extends RecyclerView.Adapter<UsersListAdapter.MyVi
         TextView txtPhone;
         @BindView(R.id.txtmeetTo)
         TextView txtmeetTo;
-       /* @BindView(R.id.btnEdit)
-        Button btnEdit;
-        @BindView(R.id.btnDelete)
-        Button btnDelete;*/
+        @BindView(R.id.txtCheckInTime)
+        TextView txtCheckInTime;
+        @BindView(R.id.txtCheckOutTime)
+        TextView txtCheckOutTime;
+        @BindView(R.id.txtCheckStatus)
+        TextView txtCheckStatus;
         @BindView(R.id.btnCheckout)
         Button btnCheckout;
 
-        public MyViewHolder(View view) {
+        MyViewHolder(View view) {
             super(view);
             ButterKnife.bind(this, view);
         }
     }
 
 
+    @NonNull
     @Override
     public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.from(parent.getContext())
@@ -121,37 +128,25 @@ public class UsersListAdapter extends RecyclerView.Adapter<UsersListAdapter.MyVi
     @Override
     public void onBindViewHolder(MyViewHolder holder, int position) {
         UsersModel userModel = userModelListFull.get(position);
-        holder.txtDepId.setText("User ID:  "+userModel.getUserId());
-        holder.txtName.setText("Name:  "+userModel.getName());
-        holder.txtEmail.setText("Email:  "+userModel.getEmail());
-        holder.txtPhone.setText("Phone: "+userModel.getPhone());
-        holder.txtmeetTo.setText("Whom to Meet: "+ userModel.getWhomToMeet());
+        holder.txtDepId.setText("User ID:  " + userModel.getUserId());
+        holder.txtName.setText("Name:  " + userModel.getName());
+        holder.txtEmail.setText("Email:  " + userModel.getEmail());
+        holder.txtPhone.setText("Phone: " + userModel.getPhone());
+        holder.txtmeetTo.setText("Whom to Meet: " + userModel.getWhomToMeet());
+        holder.txtCheckInTime.setText("Check In Time" + userModel.getCheckInTime());
+        holder.txtCheckOutTime.setText("Check Out Time: " + userModel.getCheckOutTime());
+        holder.txtCheckStatus.setText("Check Status " + userModel.getStatus());
 
         Glide.with(context).load(userModel.getImageUrl()).into(holder.imgProfile);
 
-       /* holder.btnEdit.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Bundle bundle = new Bundle();
-                bundle.putString("userName",userModel.getName());
-                bundle.putString("userEmail",userModel.getEmail());
-                bundle.putString("userContact",userModel.getPhone());
-                bundle.putString("userWhomToMeet",userModel.getWhomToMeet());
-                bundle.putString("userPurposeToMeet",userModel.getPurposeToMeet());
-                bundle.putString("userAddress",userModel.getAddress());
-                Intent intent = new Intent(context, UpdateUser.class);
-                intent.putExtras(bundle);
-                context.startActivity(intent);
 
-            }
-        });
-        holder.btnDelete.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                String userName = userModel.getName();
-                removeAt(position,userName);
-            }
-        });*/
+        String currentDate = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(new Date());
+
+        String currentTime = new SimpleDateFormat("hh:mm:sss", Locale.getDefault()).format(new Date());
+
+        checkOutTime = currentDate + " " + currentTime;
+
+        myRef = FirebaseDatabase.getInstance().getReference("UserDetails");
 
         holder.btnCheckout.setOnClickListener(view -> {
             AlertDialog.Builder alertbox = new AlertDialog.Builder(view.getRootView().getContext());
@@ -167,6 +162,9 @@ public class UsersListAdapter extends RecyclerView.Adapter<UsersListAdapter.MyVi
                 @Override
                 public void onClick(DialogInterface dialogInterface, int i) {
 
+                    myRef.child(userModel.getName()).child("status").setValue("Check-Out");
+                    myRef.child(userModel.getName()).child("checkOutTime").setValue(checkOutTime);
+
                 }
             });
             alertbox.show();
@@ -178,8 +176,8 @@ public class UsersListAdapter extends RecyclerView.Adapter<UsersListAdapter.MyVi
         return userModelListFull.size();
     }
 
-    public void removeAt(int position,String userName) {
-        myref = FirebaseDatabase.getInstance().getReference("UserDetails");
+    public void removeAt(int position, String userName) {
+        DatabaseReference myref = FirebaseDatabase.getInstance().getReference("UserDetails");
         userModelListFull.remove(position);
         notifyItemRemoved(position);
         notifyItemRangeChanged(position, userModelList.size());

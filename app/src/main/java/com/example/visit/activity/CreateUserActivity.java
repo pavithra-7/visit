@@ -63,6 +63,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 import java.util.Objects;
 
 import butterknife.BindView;
@@ -110,6 +111,9 @@ public class CreateUserActivity extends AppCompatActivity {
     Uri selectedImage;
     Bitmap photo;
 
+    String currentDate;
+    String currentTime;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -120,6 +124,10 @@ public class CreateUserActivity extends AppCompatActivity {
         mCompressor = new FileCompressor(CreateUserActivity.this);
 
         storageReference = FirebaseStorage.getInstance().getReference();
+
+        currentDate = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(new Date());
+
+        currentTime = new SimpleDateFormat("hh:mm:sss", Locale.getDefault()).format(new Date());
 
         stateList = new ArrayList<String>();
         stateList.add("Select State Name");
@@ -262,21 +270,23 @@ public class CreateUserActivity extends AppCompatActivity {
         city = spinCity.getSelectedItem().toString().trim();
         district = spinDistrict.getSelectedItem().toString().trim();
 
+        String checkInTime=currentDate + " "+ currentTime;
+        String checkOutTime="";
 
         if (name.isEmpty()) {
-            Toast.makeText(this,"Please enter Name",Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Please enter Name", Toast.LENGTH_SHORT).show();
         } else if (email.isEmpty()) {
-            Toast.makeText(this,"Please enter Email ID",Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Please enter Email ID", Toast.LENGTH_SHORT).show();
         } else if (emailPattern.matches(email)) {
-            Toast.makeText(this,"Please enter Valid Email ID",Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Please enter Valid Email ID", Toast.LENGTH_SHORT).show();
         } else if (phone.length() != 10) {
-            Toast.makeText(this,"Please enter Phone",Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Please enter Phone", Toast.LENGTH_SHORT).show();
         } else if (whomToMeet.isEmpty()) {
-            Toast.makeText(this,"Please enter Whom To Meet",Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Please enter Whom To Meet", Toast.LENGTH_SHORT).show();
         } else if (purposeToMeet.isEmpty()) {
-            Toast.makeText(this,"Please enter Purpose to Meet",Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Please enter Purpose to Meet", Toast.LENGTH_SHORT).show();
         } else if (address.isEmpty()) {
-            Toast.makeText(this,"Please enter Address",Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Please enter Address", Toast.LENGTH_SHORT).show();
 
         } else {
 
@@ -289,7 +299,7 @@ public class CreateUserActivity extends AppCompatActivity {
                     while (!uriTask.isSuccessful()) ;
                     Uri downloadUrl = uriTask.getResult();
                     assert downloadUrl != null;
-                    UsersModel usersModel = new UsersModel(downloadUrl.toString(), imageId, name, email, phone, whomToMeet, purposeToMeet, address, state, city, district);
+                    UsersModel usersModel = new UsersModel(downloadUrl.toString(), imageId, name, email, phone, whomToMeet, purposeToMeet, address, state, city, district,checkInTime,checkOutTime,"Check-In");
                     databaseReference.child(name).setValue(usersModel);
                     Toast.makeText(CreateUserActivity.this, "Added Successfully", Toast.LENGTH_SHORT).show();
 
@@ -362,7 +372,7 @@ public class CreateUserActivity extends AppCompatActivity {
             if (items[item].equals("Take Photo")) {
                 requestStoragePermission(true);
             } else if (items[item].equals("Choose from Library")) {
-                if(Build.VERSION.SDK_INT>22){
+                if (Build.VERSION.SDK_INT > 22) {
                     requestStoragePermission(false);
                 }
             } else if (items[item].equals("Cancel")) {

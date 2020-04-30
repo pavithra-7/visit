@@ -10,6 +10,7 @@ import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
@@ -91,6 +92,10 @@ public class AdminUsersListAdapter extends RecyclerView.Adapter<AdminUsersListAd
         TextView txtPhone;
         @BindView(R.id.txtmeetTo)
         TextView txtmeetTo;
+        @BindView(R.id.txtCheckInTime)
+        TextView txtCheckInTime;
+        @BindView(R.id.txtCheckOutTime)
+        TextView txtCheckOutTime;
 
 
 
@@ -101,6 +106,7 @@ public class AdminUsersListAdapter extends RecyclerView.Adapter<AdminUsersListAd
     }
 
 
+    @NonNull
     @Override
     public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.from(parent.getContext())
@@ -117,6 +123,8 @@ public class AdminUsersListAdapter extends RecyclerView.Adapter<AdminUsersListAd
         holder.txtEmail.setText("Email:  "+userModel.getEmail());
         holder.txtPhone.setText("Phone: "+userModel.getPhone());
         holder.txtmeetTo.setText("Whom to Meet: "+ userModel.getWhomToMeet());
+        holder.txtCheckInTime.setText("Check In Time"+ userModel.getCheckInTime());
+        holder.txtCheckOutTime.setText("Check Out Time: "+ userModel.getCheckOutTime());
 
         Glide.with(context).load(userModel.getImageUrl()).into(holder.imgProfile);
 

@@ -159,9 +159,9 @@ public class AddCityActivity extends AppCompatActivity {
                 stateName = spinStateName.getSelectedItem().toString();
                 districtName = spinDistName.getSelectedItem().toString();
 
-                if (stateName.isEmpty()) {
+                if (stateName.equals("Select State Name")) {
                     Toast.makeText(AddCityActivity.this, "Please choose State Name", Toast.LENGTH_SHORT).show();
-                }  else if (districtName.isEmpty()) {
+                }  else if (districtName.equals("Select District Name")) {
                     Toast.makeText(AddCityActivity.this, "Please choose District Name", Toast.LENGTH_SHORT).show();
                 }  else if (cityName.isEmpty()) {
 

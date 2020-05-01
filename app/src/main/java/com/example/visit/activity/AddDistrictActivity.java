@@ -107,7 +107,7 @@ public class AddDistrictActivity extends AppCompatActivity {
 
                 stateName = spinStateName.getSelectedItem().toString();
 
-                if (stateName.isEmpty()) {
+                if (stateName.equals("Select State Name")) {
                     Toast.makeText(AddDistrictActivity.this, "Please Select State Name", Toast.LENGTH_SHORT).show();
                 } else if (distName.isEmpty()) {
                     Toast.makeText(AddDistrictActivity.this, "Please enter District Name", Toast.LENGTH_SHORT).show();

@@ -85,18 +85,18 @@ public class DepartmentLoginActivity extends AppCompatActivity {
 
         if (TextUtils.isEmpty(userId)) {
             if ((TextUtils.isEmpty(password)))
-                Toast.makeText(this, "Please Enter Email and Password", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "Please Enter User ID and Password", Toast.LENGTH_SHORT).show();
             return;
         }
         if (TextUtils.isEmpty(userId)) {
-            Toast.makeText(this, "Please Enter Email", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Please Enter User ID", Toast.LENGTH_SHORT).show();
             return;
         }
         if (TextUtils.isEmpty(password)) {
             Toast.makeText(this, "Please Enter Password", Toast.LENGTH_SHORT).show();
             return;
         }
-        progressDialog.setMessage("Please Wait");
+        progressDialog.setMessage("Please Wait...");
         progressDialog.show();
 
         Query query = myref.orderByChild("depCode").equalTo(userId);

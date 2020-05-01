@@ -47,14 +47,14 @@ public class AddCityActivity extends AppCompatActivity {
     DatabaseReference myref, databaseReference, databaseReference1;
     String cityName,  cityId, stateName, districtName;
     ArrayList<String> stateList, districtList;
-    ProgressDialog progressDialog;
+    ProgressDialog progressDialog,progressDialog1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_city);
         ButterKnife.bind(this);
-        Objects.requireNonNull(getSupportActionBar()).setTitle("Add Mandal");
+        Objects.requireNonNull(getSupportActionBar()).setTitle("Add City");
         Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
 
         progressDialog = new ProgressDialog(AddCityActivity.this);
@@ -62,6 +62,10 @@ public class AddCityActivity extends AppCompatActivity {
         progressDialog.setCanceledOnTouchOutside(false);
         progressDialog.setMessage("Fetching Data...");
         progressDialog.show();
+
+
+
+
 
         stateList = new ArrayList<String>();
         stateList.add("Select State Name");
@@ -99,6 +103,7 @@ public class AddCityActivity extends AppCompatActivity {
                             String selectedState = spinStateName.getSelectedItem().toString();
 
 
+
                             //Retrieving District Names based on State Selected
                             Query query1 = databaseReference1.orderByChild("state").equalTo(selectedState);
                             query1.addValueEventListener(new ValueEventListener() {
@@ -121,7 +126,7 @@ public class AddCityActivity extends AppCompatActivity {
 
                                 @Override
                                 public void onCancelled(@NonNull DatabaseError databaseError) {
-
+                                    Toast.makeText(AddCityActivity.this, ""+databaseError.getMessage(), Toast.LENGTH_SHORT).show();
                                 }
                             });
 
@@ -168,7 +173,7 @@ public class AddCityActivity extends AppCompatActivity {
                         public void onDataChange(@NonNull DataSnapshot snapshot) {
                             if (snapshot.getValue() != null) {
                                 //user exists, do something
-                                Toast.makeText(AddCityActivity.this, "Already Mandal Name Exists", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(AddCityActivity.this, "Already City Name Exists", Toast.LENGTH_SHORT).show();
                             } else {
                                 CityData cityData = new CityData(stateName, districtName, cityId, cityName);
                                 myref.child(cityName).setValue(cityData);

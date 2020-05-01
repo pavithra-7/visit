@@ -1,5 +1,6 @@
 package com.example.visit.activity;
 
+import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -39,6 +40,7 @@ public class UserListActivity extends AppCompatActivity {
 
     String TAG="FIREBASE_DATA";
     DatabaseReference myRef;
+    ProgressDialog progressDialog;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -46,6 +48,12 @@ public class UserListActivity extends AppCompatActivity {
         ButterKnife.bind(this);
         Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setTitle("Users List");
+
+        progressDialog = new ProgressDialog(this);
+        progressDialog.setMessage("Loading...");
+        progressDialog.setCanceledOnTouchOutside(false);
+        progressDialog.setCancelable(false);
+        progressDialog.show();
 
 
         myRef = FirebaseDatabase.getInstance().getReference("UserDetails");
@@ -71,12 +79,14 @@ public class UserListActivity extends AppCompatActivity {
                 recyclerUsers.setHasFixedSize(true);
                 adapter = new UsersListAdapter(usersModels, UserListActivity.this);
                 recyclerUsers.setAdapter(adapter);
+                progressDialog.dismiss();
 
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
                 // Failed to read value
+                progressDialog.dismiss();
                 Log.d(TAG, "onCancelled: " + error);
 
             }

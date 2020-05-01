@@ -1,5 +1,6 @@
 package com.example.visit.activity;
 
+import android.app.ProgressDialog;
 import android.app.SearchManager;
 import android.content.Context;
 import android.os.Bundle;
@@ -43,6 +44,7 @@ public class DeaprtmentListActivity extends AppCompatActivity {
     private ArrayList<DepartmentModel> departmentModels = new ArrayList<>();
 
     DatabaseReference myRef;
+    ProgressDialog progressDialog;
 
     String TAG="FIREBASE_DATA";
     @Override
@@ -52,6 +54,12 @@ public class DeaprtmentListActivity extends AppCompatActivity {
         ButterKnife.bind(this);
         Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setTitle("Department List");
+
+        progressDialog = new ProgressDialog(this);
+        progressDialog.setMessage("Loading...");
+        progressDialog.setCanceledOnTouchOutside(false);
+        progressDialog.setCancelable(false);
+        progressDialog.show();
 
         myRef = FirebaseDatabase.getInstance().getReference("DepartmentDetails");
 
@@ -79,6 +87,7 @@ public class DeaprtmentListActivity extends AppCompatActivity {
                 recyclerDepartment.setHasFixedSize(true);
                 adapter = new DepartmentListAdapter(departmentModels, DeaprtmentListActivity.this);
                 recyclerDepartment.setAdapter(adapter);
+                progressDialog.dismiss();
 
 
             }
@@ -86,6 +95,7 @@ public class DeaprtmentListActivity extends AppCompatActivity {
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
                 // Failed to read value
+                progressDialog.dismiss();
                 Log.d(TAG, "onCancelled: " + error);
 
             }

@@ -36,10 +36,8 @@ public class AddDistrictActivity extends AppCompatActivity {
 
     @BindView(R.id.spinStateName)
     Spinner spinStateName;
-
     @BindView(R.id.etDistName)
     TextInputEditText etDistName;
-
     @BindView(R.id.btnSubmit)
     Button btnSubmit;
     DatabaseReference myref, databaseReference;

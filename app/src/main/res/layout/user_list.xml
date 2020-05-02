@@ -28,8 +28,8 @@
                     android:id="@+id/imgProfile"
                     android:layout_width="80dp"
                     android:layout_height="100dp"
-                    android:layout_gravity="center"
                     android:background="@drawable/rounde_corners"
+                    android:scaleType="fitXY"
                     app:srcCompat="@drawable/ic_person_black_24dp" />
 
                 <LinearLayout
@@ -72,35 +72,66 @@
                         android:layout_marginTop="5dp"
                         android:visibility="gone" />
 
+
+                </LinearLayout>
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="#e5e5e5"
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="5dp"/>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:weightSum="2">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.5"
+                    android:orientation="vertical"
+                    android:padding="5dp">
+
                     <TextView
+                        android:textColor="#71119A"
                         android:id="@+id/txtCheckStatus"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="5dp" />
+                        android:layout_height="wrap_content" />
+
                     <TextView
+                        android:textColor="#E64A19"
                         android:id="@+id/txtCheckInTime"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="5dp" />
 
                     <TextView
+                        android:textColor="#0B8E11"
                         android:id="@+id/txtCheckOutTime"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="5dp" />
 
                 </LinearLayout>
-            </LinearLayout>
 
-            <Button
-                android:id="@+id/btnCheckout"
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_marginTop="10dp"
-                android:layout_weight="1"
-                android:background="@drawable/rounde_corners"
-                android:text="Checkout"
-                android:textColor="@color/colorAccent" />
+                <Button
+
+                    android:id="@+id/btnCheckout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_weight="1.5"
+                    android:background="@drawable/rounde_corners"
+                    android:paddingStart="8dp"
+                    android:paddingEnd="8dp"
+                    android:textSize="12sp"
+                    android:text="Checkout"
+                    android:textColor="@color/colorAccent" />
+
+            </LinearLayout>
 
 
         </LinearLayout>

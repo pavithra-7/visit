@@ -70,8 +70,6 @@ public class DeaprtmentListActivity extends AppCompatActivity {
 
         myRef = FirebaseDatabase.getInstance().getReference("DepartmentDetails");
 
-
-
         data();
 
     }

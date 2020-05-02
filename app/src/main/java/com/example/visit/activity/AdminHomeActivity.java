@@ -10,7 +10,6 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.visit.R;
 import com.example.visit.utils.ConstantValues;
@@ -37,35 +36,44 @@ public class AdminHomeActivity extends AppCompatActivity {
     Button btnRegister;
 
     MyAppPrefsManager myAppPrefsManager;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_admin_home);
         ButterKnife.bind(this);
-        myAppPrefsManager=new MyAppPrefsManager(AdminHomeActivity.this);
+        myAppPrefsManager = new MyAppPrefsManager(AdminHomeActivity.this);
         Objects.requireNonNull(getSupportActionBar()).setTitle("Admin Home Page");
+        Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
     }
 
-    @OnClick({R.id.btnCreateDepartment, R.id.btnDepartmentList, R.id.btnUsersList, R.id.btnUsersGraph,R.id.btnRegister})
+    @OnClick({R.id.btnCreateDepartment, R.id.btnDepartmentList, R.id.btnUsersList, R.id.btnUsersGraph, R.id.btnRegister})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.btnCreateDepartment:
-                startActivity(new Intent(AdminHomeActivity.this, CreateDepartmentActivity.class));
-
+                Intent intent1 = new Intent(AdminHomeActivity.this, CreateDepartmentActivity.class);
+                intent1.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intent1);
                 break;
             case R.id.btnDepartmentList:
-                startActivity(new Intent(AdminHomeActivity.this, DeaprtmentListActivity.class));
+                Intent intent2 = new Intent(AdminHomeActivity.this, DeaprtmentListActivity.class);
+                intent2.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intent2);
                 break;
             case R.id.btnUsersList:
-                startActivity(new Intent(AdminHomeActivity.this, AdminUserListActivity.class));
+                Intent intent3 = new Intent(AdminHomeActivity.this, AdminUserListActivity.class);
+                intent3.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intent3);
                 break;
             case R.id.btnUsersGraph:
-                startActivity(new Intent(AdminHomeActivity.this,AdminUsersGraph.class));
+                Intent intent4 = new Intent(AdminHomeActivity.this, AdminUsersGraphActivity.class);
+                intent4.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intent4);
                 break;
             case R.id.btnRegister:
-                Intent intent = new Intent(AdminHomeActivity.this, RegistrationActivity.class);
-                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                startActivity(intent);
+                Intent intent5 = new Intent(AdminHomeActivity.this, AddMasterDataActivity.class);
+                intent5.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intent5);
                 break;
         }
     }
@@ -86,7 +94,7 @@ public class AdminHomeActivity extends AppCompatActivity {
                 myAppPrefsManager.setAdminLoggedIn(false);
                 ConstantValues.IS_USER_LOGGED_IN_ADMIN = myAppPrefsManager.isAdminLoggedIn();
                 Intent intent = new Intent(AdminHomeActivity.this, AdminLoginActivity.class);
-                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(intent);
                 break;
             case android.R.id.home:

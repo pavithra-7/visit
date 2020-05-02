@@ -9,6 +9,7 @@
     <string name="users_graph">Users Graph</string>
     <string name="admin_login">Admin Login</string>
     <string name="department_login">Department Login</string>
+    <string name="no_data_found">No Data Found</string>
 
     <string-array name="states">
         <item>Choose State</item>

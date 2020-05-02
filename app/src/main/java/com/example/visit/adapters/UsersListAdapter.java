@@ -18,6 +18,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.example.visit.R;
 import com.example.visit.model.UsersModel;
+import com.example.visit.utils.MyAppPrefsManager;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
@@ -130,12 +131,15 @@ public class UsersListAdapter extends RecyclerView.Adapter<UsersListAdapter.MyVi
         holder.txtEmail.setText("Email:  " + userModel.getEmail());
         holder.txtPhone.setText("Phone: " + userModel.getPhone());
         holder.txtmeetTo.setText("Whom to Meet: " + userModel.getWhomToMeet());
-        holder.txtCheckInTime.setText("Check In Time" + userModel.getCheckInTime());
-        holder.txtCheckOutTime.setText("Check Out Time: " + userModel.getCheckOutTime());
-        holder.txtCheckStatus.setText("Check Status: " + userModel.getStatus());
+        holder.txtCheckInTime.setText("Check-In : " + userModel.getCheckInTime());
+        holder.txtCheckOutTime.setText("Check-Out : " + userModel.getCheckOutTime());
+        holder.txtCheckStatus.setText("Status: " + userModel.getStatus());
 
         Glide.with(context).load(userModel.getImageUrl()).into(holder.imgProfile);
 
+
+        MyAppPrefsManager myAppPrefsManager = new MyAppPrefsManager(context);
+        String departmentName = myAppPrefsManager.getDepartmentName();
 
         String currentDate = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(new Date());
 
@@ -145,9 +149,9 @@ public class UsersListAdapter extends RecyclerView.Adapter<UsersListAdapter.MyVi
 
         myRef = FirebaseDatabase.getInstance().getReference("UserDetails");
 
-        if(userModel.getStatus().equalsIgnoreCase("Check-Out")){
+        if (userModel.getStatus().equalsIgnoreCase("Check-Out")) {
             holder.btnCheckout.setVisibility(View.GONE);
-        }else {
+        } else {
             holder.btnCheckout.setVisibility(View.VISIBLE);
         }
 
@@ -165,8 +169,8 @@ public class UsersListAdapter extends RecyclerView.Adapter<UsersListAdapter.MyVi
                 @Override
                 public void onClick(DialogInterface dialogInterface, int i) {
 
-                    myRef.child(userModel.getName()).child("status").setValue("Check-Out");
-                    myRef.child(userModel.getName()).child("checkOutTime").setValue(checkOutTime);
+                    myRef.child(departmentName).child(userModel.getImageId()).child("status").setValue("Check-Out");
+                    myRef.child(departmentName).child(userModel.getImageId()).child("checkOutTime").setValue(checkOutTime);
 
                 }
             });
@@ -177,14 +181,6 @@ public class UsersListAdapter extends RecyclerView.Adapter<UsersListAdapter.MyVi
     @Override
     public int getItemCount() {
         return userModelListFull.size();
-    }
-
-    public void removeAt(int position, String userName) {
-        DatabaseReference myref = FirebaseDatabase.getInstance().getReference("UserDetails");
-        userModelListFull.remove(position);
-        notifyItemRemoved(position);
-        notifyItemRangeChanged(position, userModelList.size());
-        myref.child(userName).removeValue();
     }
 
 

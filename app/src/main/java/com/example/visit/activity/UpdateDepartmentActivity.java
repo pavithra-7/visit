@@ -5,22 +5,16 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.Toast;
 
 import com.example.visit.R;
 import com.example.visit.model.DepartmentModel;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.android.material.textfield.TextInputEditText;
-import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.Query;
 
 import java.util.Objects;
 
@@ -28,7 +22,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class UpdateDepartment extends AppCompatActivity {
+public class UpdateDepartmentActivity extends AppCompatActivity {
 
     @BindView(R.id.etDepartmentName)
     TextInputEditText etDepartmentName;
@@ -167,11 +161,11 @@ public class UpdateDepartment extends AppCompatActivity {
             databaseReference.child(deptName).child("headEmail").setValue(deptHeadEmail);
             databaseReference.child(deptName).child("headPhone").setValue(deptHeadPhone);*/
 
-            DepartmentModel departmentModel = new DepartmentModel(deptName, deptEmail, deptPassword, deptPhone, deptCode, deptHeadName, deptHeadEmail, deptHeadPhone,Integer.parseInt(usersCount));
+            DepartmentModel departmentModel = new DepartmentModel(deptName, deptEmail, deptPassword, deptPhone, deptCode, deptHeadName, deptHeadEmail, deptHeadPhone,usersCount);
             databaseReference.child(deptName).setValue(departmentModel);
 
             Toast.makeText(this, "Details Updated Successfully !", Toast.LENGTH_SHORT).show();
-            Intent intent = new Intent(UpdateDepartment.this, AdminHomeActivity.class);
+            Intent intent = new Intent(UpdateDepartmentActivity.this, AdminHomeActivity.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
             startActivity(intent);
 

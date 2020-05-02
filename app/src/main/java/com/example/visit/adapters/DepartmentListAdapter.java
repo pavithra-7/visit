@@ -15,7 +15,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.visit.R;
-import com.example.visit.activity.UpdateDepartment;
+import com.example.visit.activity.UpdateDepartmentActivity;
 import com.example.visit.model.DepartmentModel;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
@@ -135,8 +135,8 @@ public class DepartmentListAdapter extends RecyclerView.Adapter<DepartmentListAd
                 bundle.putString("deptHod",departmentModel.getHeadofdep());
                 bundle.putString("deptHeadEmail",departmentModel.getHeadEmail());
                 bundle.putString("deptHeadPhone",departmentModel.getHeadPhone());
-                bundle.putString("deptUsersCount",String.valueOf(departmentModel.getUsersCount()));
-                Intent intent = new Intent(context, UpdateDepartment.class);
+                bundle.putString("deptUsersCount",departmentModel.getUserCount());
+                Intent intent = new Intent(context, UpdateDepartmentActivity.class);
                 intent.putExtras(bundle);
                 context.startActivity(intent);
             }
@@ -150,6 +150,9 @@ public class DepartmentListAdapter extends RecyclerView.Adapter<DepartmentListAd
                 removeAt(position,deptName);
             }
         });
+
+
+
     }
 
     @Override
@@ -159,7 +162,6 @@ public class DepartmentListAdapter extends RecyclerView.Adapter<DepartmentListAd
 
     public void removeAt(int position,String deptName) {
         myref = FirebaseDatabase.getInstance().getReference("DepartmentDetails");
-        DepartmentModel model = departmentModelListFull.get(position);
         departmentModelListFull.remove(position);
         notifyItemRemoved(position);
         notifyItemRangeChanged(position, departmentModelList.size());

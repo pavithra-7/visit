@@ -6,12 +6,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.view.MenuItem;
-import android.widget.ArrayAdapter;
 import android.widget.Toast;
 
 import com.example.visit.R;
-import com.example.visit.UsersGraph;
-import com.example.visit.model.DepartmentModel;
 import com.example.visit.model.UsersModel;
 import com.example.visit.utils.MyAppPrefsManager;
 import com.github.mikephil.charting.charts.BarChart;
@@ -30,7 +27,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-public class AdminUsersGraph extends AppCompatActivity {
+public class UsersGraphActivity extends AppCompatActivity {
 
     BarChart barChart;
     ProgressDialog progressDialog;
@@ -42,39 +39,22 @@ public class AdminUsersGraph extends AppCompatActivity {
     int usersCount;
 
     DatabaseReference myRef;
-    List<DepartmentModel> deptUsersModelList;
-    List<String> deptNamesList;
-    List<Integer> deptCount;
+    List<UsersModel> usersModelList;
 
     final ArrayList<BarEntry> barEntries = new ArrayList<>();
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_admin_users_graph);
+        setContentView(R.layout.activity_users_graph);
 
         Objects.requireNonNull(getSupportActionBar()).setTitle("List of Users");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         barChart = (BarChart) findViewById(R.id.bargraph);
 
-        deptUsersModelList = new ArrayList<DepartmentModel>();
-        deptNamesList = new ArrayList<>();
-        deptCount = new ArrayList<>();
-
-        myRef = FirebaseDatabase.getInstance().getReference("DepartmentDetails");
-
-        myAppPrefsManager = new MyAppPrefsManager(this);
-
-        departmentName = myAppPrefsManager.getDepartmentName();
-
-        getData();
-
-
-
-    }
-
-    public void getData() {
+        usersModelList = new ArrayList<>();
 
         progressDialog = new ProgressDialog(this);
         progressDialog.setMessage("Loading Data...");
@@ -82,61 +62,62 @@ public class AdminUsersGraph extends AppCompatActivity {
         progressDialog.setCanceledOnTouchOutside(false);
         progressDialog.show();
 
+        myRef = FirebaseDatabase.getInstance().getReference("UserDetails");
 
-        myRef.addValueEventListener(new ValueEventListener() {
+        myAppPrefsManager = new MyAppPrefsManager(this);
+
+        departmentName = myAppPrefsManager.getDepartmentName();
+
+        getData();
+
+    }
+
+    public void getData() {
+
+
+        myRef.child(departmentName).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                if(dataSnapshot.exists()) {
-                    for(DataSnapshot dataSnapshot1: dataSnapshot.getChildren()) {
-                        DepartmentModel departmentModel = dataSnapshot1.getValue(DepartmentModel.class);
-                        deptUsersModelList.add(departmentModel);
-                    }
-
-                    for(DepartmentModel departmentModel : deptUsersModelList) {
-                        String deptName = String.valueOf(departmentModel.getDepName());
-                        String usersCount = String.valueOf(departmentModel.getUsersCount());
-
-                        deptNamesList.add(deptName);
-                        deptCount.add(Integer.parseInt(usersCount));
+                if (dataSnapshot.exists()) {
+                    for (DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()) {
+                        UsersModel usersModel = dataSnapshot1.getValue(UsersModel.class);
+                        usersModelList.add(usersModel);
                     }
 
                     progressDialog.dismiss();
 
-                    for(int i=0;i<deptCount.size();i++) {
-                        barEntries.add(new BarEntry(deptCount.get(i),i));
-                    }
+
+                    barEntries.add(new BarEntry(usersModelList.size(), 0));
+
 
                     XAxis xAxis = barChart.getXAxis();
                     xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
                     xAxis.setTextSize(15f);
                     xAxis.setDrawAxisLine(true);
 
-                    BarDataSet barDataSet = new BarDataSet(barEntries,"List of Users");
 
+                    BarDataSet barDataSet = new BarDataSet(barEntries, "List of Users");
 
-                    barDataSet.setColors(ColorTemplate.VORDIPLOM_COLORS);
+                    ArrayList<String> type = new ArrayList<>();
+                    type.add(departmentName);
 
-                    BarData theData = new BarData(deptNamesList,barDataSet);
+                    barDataSet.setColors(ColorTemplate.COLORFUL_COLORS);
+
+                    BarData theData = new BarData(type, barDataSet);
                     barChart.setData(theData);
                     barChart.animateXY(3000, 3000);
-                    //barChart.setTouchEnabled(true);
-                    barChart.setDragEnabled(true);
-                    barChart.setScaleEnabled(true);
                     barChart.setDescription("");
 
-                   /* usersCount = usersModelList.size();
-                    Toast.makeText(UsersGraph.this, ""+usersCount, Toast.LENGTH_SHORT).show();
-                   */ //barEntries.add(new BarEntry(usersModelList.size(),0));
                 } else {
                     progressDialog.dismiss();
-                    Toast.makeText(AdminUsersGraph.this, "No Data Found !", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(UsersGraphActivity.this, "No Data Found !", Toast.LENGTH_SHORT).show();
                 }
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
                 progressDialog.dismiss();
-                Toast.makeText(AdminUsersGraph.this, ""+databaseError.getMessage(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(UsersGraphActivity.this, "" + databaseError.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -150,6 +131,4 @@ public class AdminUsersGraph extends AppCompatActivity {
         }
         return super.onOptionsItemSelected(item);
     }
-
-
 }

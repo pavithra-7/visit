@@ -151,13 +151,26 @@ public class CreateUserActivity extends AppCompatActivity {
         progressDialog.setCancelable(false);
         progressDialog.setMessage("Please Wait....");
 
-        databaseReference = FirebaseDatabase.getInstance().getReference("UserDetails");
-
-        myRefDepartmentDetails = FirebaseDatabase.getInstance().getReference("DepartmentDetails").child(departmentName);
-
         myRefStates = FirebaseDatabase.getInstance().getReference("State_Details");
         myRefDistricts = FirebaseDatabase.getInstance().getReference("District_Details");
         myRefCities = FirebaseDatabase.getInstance().getReference().child("City_Details");
+        databaseReference = FirebaseDatabase.getInstance().getReference("UserDetails");
+        myRefDepartmentDetails = FirebaseDatabase.getInstance().getReference("DepartmentDetails");
+
+        myRefDepartmentDetails.child(departmentName).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if(dataSnapshot.exists()) {
+                    deptUsersCount = Integer.parseInt(Objects.requireNonNull(dataSnapshot.getValue(DepartmentModel.class)).getUserCount());
+                    deptUsersCount = deptUsersCount + 1;
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                Toast.makeText(CreateUserActivity.this, ""+databaseError.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
 
 
         getStates();
@@ -323,6 +336,8 @@ public class CreateUserActivity extends AppCompatActivity {
             }
         });
 
+
+
     }
 
     public void next() {
@@ -368,28 +383,16 @@ public class CreateUserActivity extends AppCompatActivity {
                     Uri downloadUrl = uriTask.getResult();
                     assert downloadUrl != null;
 
-                    myRefDepartmentDetails.addListenerForSingleValueEvent(new ValueEventListener() {
-                        @Override
-                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                            if(dataSnapshot.exists()) {
-                                    deptUsersCount = Objects.requireNonNull(dataSnapshot.getValue(DepartmentModel.class)).getUsersCount();
-                                    deptUsersCount = deptUsersCount + 1;
-                                    dataSnapshot.getRef().child("usersCount").setValue(deptUsersCount);
-                            }  else {
-                                Toast.makeText(CreateUserActivity.this, "No Data Found ", Toast.LENGTH_SHORT).show();
-                            }
-                        }
 
-                        @Override
-                        public void onCancelled(@NonNull DatabaseError databaseError) {
-                            Toast.makeText(CreateUserActivity.this, ""+databaseError.getMessage(), Toast.LENGTH_SHORT).show();
-                        }
-                    });
 
                     UsersModel usersModel = new UsersModel(downloadUrl.toString(), imageId, name, email, phone, whomToMeet, purposeToMeet, address, state, city, district,checkInTime,checkOutTime,"Check-In",departmentName);
                     assert imageId != null;
                     databaseReference.child(departmentName).child(imageId).setValue(usersModel);
+
+
                     Toast.makeText(CreateUserActivity.this, "Added Successfully", Toast.LENGTH_SHORT).show();
+                    myRefDepartmentDetails.child(departmentName).child("userCount").setValue(String.valueOf(deptUsersCount));
+
                     regProgress.dismiss();
                     Intent intent = new Intent(CreateUserActivity.this,DepartmentHomeActivity.class);
                     intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_CLEAR_TOP);

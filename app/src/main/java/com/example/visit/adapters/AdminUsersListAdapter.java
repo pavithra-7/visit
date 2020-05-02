@@ -32,7 +32,6 @@ public class AdminUsersListAdapter extends RecyclerView.Adapter<AdminUsersListAd
     private List<UsersModel> userModelList;
     private List<UsersModel> userModelListFull;
     private Context context;
-    private DatabaseReference myref;
 
     public AdminUsersListAdapter(List<UsersModel> userModelList, Context context) {
         this.userModelList = userModelList;
@@ -135,13 +134,7 @@ public class AdminUsersListAdapter extends RecyclerView.Adapter<AdminUsersListAd
         return userModelListFull.size();
     }
 
-    public void removeAt(int position,String userName) {
-        myref = FirebaseDatabase.getInstance().getReference("UserDetails");
-        userModelListFull.remove(position);
-        notifyItemRemoved(position);
-        notifyItemRangeChanged(position, userModelList.size());
-        myref.child(userName).removeValue();
-    }
+
 
 
 }

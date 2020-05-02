@@ -18,7 +18,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class RegistrationActivity extends AppCompatActivity {
+public class AddMasterDataActivity extends AppCompatActivity {
 
     @BindView(R.id.btnState)
     Button btnState;
@@ -43,17 +43,17 @@ public class RegistrationActivity extends AppCompatActivity {
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.btnState:
-                Intent intent = new Intent(RegistrationActivity.this, AddStateActivity.class);
+                Intent intent = new Intent(AddMasterDataActivity.this, AddStateActivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent);
                 break;
             case R.id.btnDistrict:
-                Intent intent1 = new Intent(RegistrationActivity.this, AddDistrictActivity.class);
+                Intent intent1 = new Intent(AddMasterDataActivity.this, AddDistrictActivity.class);
                 intent1.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent1);
                 break;
             case R.id.btnMandal:
-                Intent intent2 = new Intent(RegistrationActivity.this, AddCityActivity.class);
+                Intent intent2 = new Intent(AddMasterDataActivity.this, AddCityActivity.class);
                 intent2.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent2);
                 break;

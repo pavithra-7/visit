@@ -42,7 +42,6 @@ public class AddStateActivity extends AppCompatActivity {
         Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
         Objects.requireNonNull(getSupportActionBar()).setTitle("Add State");
 
-
         myref = FirebaseDatabase.getInstance().getReference().child("State_Details");
 
         btnSubmit.setOnClickListener(new View.OnClickListener() {

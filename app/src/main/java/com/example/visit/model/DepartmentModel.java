@@ -14,12 +14,13 @@ public class DepartmentModel {
     private String headofdep;
     private String headEmail;
     private String headPhone;
-    private int usersCount;
+    private String userCount;
+
 
     public DepartmentModel() {
     }
 
-    public DepartmentModel( String depName, String depMail,String depPassword, String depPhone, String depCode, String headofdep, String headEmail, String headPhone,int usersCount) {
+    public DepartmentModel( String depName, String depMail,String depPassword, String depPhone, String depCode, String headofdep, String headEmail, String headPhone,String userCount) {
         depID = count.incrementAndGet();
         this.depName = depName;
         this.depMail = depMail;
@@ -29,7 +30,8 @@ public class DepartmentModel {
         this.headofdep = headofdep;
         this.headEmail = headEmail;
         this.headPhone = headPhone;
-        this.usersCount = usersCount;
+        this.userCount = userCount;
+
     }
 
     public DepartmentModel(String depPhone, String headofdep, String headEmail, String headPhone) {
@@ -39,13 +41,6 @@ public class DepartmentModel {
         this.headPhone = headPhone;
     }
 
-    public int getUsersCount() {
-        return usersCount;
-    }
-
-    public void setUsersCount(int usersCount) {
-        this.usersCount = usersCount;
-    }
 
     public int getDepID() {
         return depID;
@@ -117,5 +112,13 @@ public class DepartmentModel {
 
     public void setHeadPhone(String headPhone) {
         this.headPhone = headPhone;
+    }
+
+    public String getUserCount() {
+        return userCount;
+    }
+
+    public void setUserCount(String userCount) {
+        this.userCount = userCount;
     }
 }

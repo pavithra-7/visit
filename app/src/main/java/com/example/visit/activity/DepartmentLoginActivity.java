@@ -45,10 +45,7 @@ public class DepartmentLoginActivity extends AppCompatActivity {
     EditText etPassword;
     @BindView(R.id.btnLogin)
     Button btnLogin;
-
-
     String userId, password;
-
     FirebaseAuth mAuth;
     ProgressDialog progressDialog;
     MyAppPrefsManager myAppPrefsManager;
@@ -78,23 +75,14 @@ public class DepartmentLoginActivity extends AppCompatActivity {
     @OnClick(R.id.btnLogin)
     public void onViewClicked() {
 
-
         userId = etUserId.getText().toString().trim();
         password = etPassword.getText().toString().trim();
 
-
-        if (TextUtils.isEmpty(userId)) {
-            if ((TextUtils.isEmpty(password)))
-                Toast.makeText(this, "Please Enter User ID and Password", Toast.LENGTH_SHORT).show();
-            return;
-        }
         if (TextUtils.isEmpty(userId)) {
             Toast.makeText(this, "Please Enter User ID", Toast.LENGTH_SHORT).show();
-            return;
         }
         if (TextUtils.isEmpty(password)) {
             Toast.makeText(this, "Please Enter Password", Toast.LENGTH_SHORT).show();
-            return;
         }
         progressDialog.setMessage("Please Wait...");
         progressDialog.show();
@@ -113,7 +101,7 @@ public class DepartmentLoginActivity extends AppCompatActivity {
                             myAppPrefsManager.setDepartmentName(departmentName);
                             Toast.makeText(DepartmentLoginActivity.this, "Success", Toast.LENGTH_SHORT).show();
                             Intent intent = new Intent(DepartmentLoginActivity.this,DepartmentHomeActivity.class);
-                            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_NEW_TASK);
                             startActivity(intent);
                         } else {
                             progressDialog.dismiss();
@@ -131,10 +119,6 @@ public class DepartmentLoginActivity extends AppCompatActivity {
                 Toast.makeText(DepartmentLoginActivity.this, ""+databaseError.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
-
-
-
-
 
     }
 

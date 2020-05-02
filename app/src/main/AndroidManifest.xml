@@ -25,11 +25,11 @@
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true"
         tools:targetApi="m">
-        <activity android:name=".activity.AdminUsersGraph"></activity>
-        <activity android:name=".UsersGraph" />
+        <activity android:name=".activity.AdminUsersGraphActivity"></activity>
+        <activity android:name=".activity.UsersGraphActivity" />
         <activity android:name=".activity.AdminUserListActivity" />
         <activity
-            android:name=".activity.UpdateDepartment"
+            android:name=".activity.UpdateDepartmentActivity"
             android:screenOrientation="portrait" />
         <activity
             android:name=".activity.HomeActivity"
@@ -56,7 +56,7 @@
 
         </activity>
         <activity
-            android:name=".activity.RegistrationActivity"
+            android:name=".activity.AddMasterDataActivity"
             android:screenOrientation="portrait" />
         <activity
             android:name=".activity.AddStateActivity"

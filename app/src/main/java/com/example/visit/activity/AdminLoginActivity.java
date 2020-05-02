@@ -112,14 +112,11 @@ public class AdminLoginActivity extends AppCompatActivity {
                             } else {
                                 progressDialog.dismiss();
                                 Toast.makeText(AdminLoginActivity.this, "Login Successfully", Toast.LENGTH_SHORT).show();
-
                                 myAppPrefsManager.setAdminLoggedIn(true);
                                 ConstantValues.IS_USER_LOGGED_IN_ADMIN = myAppPrefsManager.isAdminLoggedIn();
                                 Intent intent = new Intent(AdminLoginActivity.this, AdminHomeActivity.class);
-                                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                                intent.putExtra("email", email);
+                                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
                                 startActivity(intent);
-
 
                             }
 

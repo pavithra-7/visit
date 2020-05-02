@@ -63,16 +63,11 @@ public class AddCityActivity extends AppCompatActivity {
         progressDialog.setMessage("Fetching Data...");
         progressDialog.show();
 
-
-
-
-
         stateList = new ArrayList<String>();
         stateList.add("Select State Name");
 
         districtList = new ArrayList<>();
         districtList.add("Select District Name");
-
 
         myref = FirebaseDatabase.getInstance().getReference().child("City_Details");
         databaseReference = FirebaseDatabase.getInstance().getReference("State_Details");

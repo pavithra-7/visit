@@ -7,9 +7,29 @@
     android:padding="10dp"
     tools:context=".activity.AdminUserListActivity">
 
-    <androidx.recyclerview.widget.RecyclerView
+
+    <Spinner
+        android:id="@+id/spinDepartments"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:spinnerMode="dialog"
+        android:layout_margin="5dp" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:layout_below="@+id/spinDepartments"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="5dp"
         android:id="@+id/recyclerUsers"/>
+
+    <TextView
+        android:id="@+id/editEmpty"
+        android:layout_width="match_parent"
+        android:layout_centerInParent="true"
+        android:text="@string/no_data_found"
+        android:gravity="center"
+        android:visibility="gone"
+        android:textColor="#000000"
+        android:layout_height="wrap_content"/>
 
 </RelativeLayout>

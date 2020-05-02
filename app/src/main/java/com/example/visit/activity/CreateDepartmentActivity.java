@@ -57,8 +57,7 @@ public class CreateDepartmentActivity extends AppCompatActivity {
     DatabaseReference databaseReference;
 
 
-    String subjectID;
-    private FirebaseAuth mAuth;
+
 
     String TAG = "FIREBASE_DATA";
 
@@ -69,8 +68,6 @@ public class CreateDepartmentActivity extends AppCompatActivity {
         ButterKnife.bind(this);
         Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setTitle("Create Department");
-
-        mAuth = FirebaseAuth.getInstance();
         databaseReference = FirebaseDatabase.getInstance().getReference("DepartmentDetails");
 
     }
@@ -137,8 +134,6 @@ public class CreateDepartmentActivity extends AppCompatActivity {
             }
             deptCode = (firstThreeChars + "_" + lastThreeDigits).toUpperCase();
 
-
-
             databaseReference.child(deptName).addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -146,7 +141,7 @@ public class CreateDepartmentActivity extends AppCompatActivity {
                         //user exists, do something
                         Toast.makeText(CreateDepartmentActivity.this, "Already Department Name Exists", Toast.LENGTH_SHORT).show();
                     } else {
-                        DepartmentModel departmentModel = new DepartmentModel(deptName, deptEmail, deptPassword, deptPhone, deptCode, deptHeadName, deptHeadEmail, deptHeadPhone,0);
+                        DepartmentModel departmentModel = new DepartmentModel(deptName, deptEmail, deptPassword, deptPhone, deptCode, deptHeadName, deptHeadEmail, deptHeadPhone,"0");
                         databaseReference.child(deptName).setValue(departmentModel);
                         Toast.makeText(CreateDepartmentActivity.this, "Added Successfully", Toast.LENGTH_SHORT).show();
                         Intent intent = new Intent(CreateDepartmentActivity.this, AdminHomeActivity.class);

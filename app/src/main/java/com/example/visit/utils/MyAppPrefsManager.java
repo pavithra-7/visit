@@ -21,6 +21,8 @@ public class MyAppPrefsManager {
     private static final String USER_CONF_ID  = "user_conf_id";
     private static final String USER_CONF_TITLE  = "user_conf_title";
 
+    private static final String DEPARTMENT_NAME = "dept_name";
+
     private static final String USER_NAME  = "user_name";
     private static final String USER_MOBILE  = "user_mobile";
     private static final String USER_PINCODE  = "user_pincode";
@@ -143,6 +145,19 @@ public class MyAppPrefsManager {
     public boolean isDepartmentLoggedIn() {
         return sharedPreferences.getBoolean(IS_USER_LOGGED_IN_DEPARTMENT, false);
     }
+
+
+    public void setDepartmentName(String departmentName) {
+        prefsEditor.putString(DEPARTMENT_NAME, departmentName);
+        prefsEditor.commit();
+    }
+
+    public String getDepartmentName() {
+        return sharedPreferences.getString(DEPARTMENT_NAME, null);
+    }
+
+
+
 
     public void setFirstTimeLaunch(boolean isFirstTimeLaunch) {
         prefsEditor.putBoolean(IS_FIRST_TIME_LAUNCH, isFirstTimeLaunch);

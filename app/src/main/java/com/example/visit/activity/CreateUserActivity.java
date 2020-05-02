@@ -31,10 +31,12 @@ import com.bumptech.glide.request.RequestOptions;
 import com.example.visit.BuildConfig;
 import com.example.visit.R;
 import com.example.visit.model.CityData;
+import com.example.visit.model.DepartmentModel;
 import com.example.visit.model.DistrictData;
 import com.example.visit.model.StateData;
 import com.example.visit.model.UsersModel;
 import com.example.visit.utils.FileCompressor;
+import com.example.visit.utils.MyAppPrefsManager;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
@@ -104,12 +106,17 @@ public class CreateUserActivity extends AppCompatActivity {
 
     ProgressDialog progressDialog, regProgress;
     StorageReference storageReference;
+
+    MyAppPrefsManager myAppPrefsManager;
+    String departmentName;
+
+    int deptUsersCount;
    
 
     String currentDate;
     String currentTime;
 
-    DatabaseReference  myRefStates, myRefDistricts, myRefCities;
+    DatabaseReference  myRefStates, myRefDistricts, myRefCities,myRefDepartmentDetails;
     ArrayList<String> stateNameList, districtNameList, cityNameList;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -118,6 +125,11 @@ public class CreateUserActivity extends AppCompatActivity {
         ButterKnife.bind(this);
         Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setTitle("Create User");
+
+        myAppPrefsManager = new MyAppPrefsManager(this);
+
+        departmentName = myAppPrefsManager.getDepartmentName();
+
         mCompressor = new FileCompressor(CreateUserActivity.this);
 
         storageReference = FirebaseStorage.getInstance().getReference();
@@ -140,6 +152,8 @@ public class CreateUserActivity extends AppCompatActivity {
         progressDialog.setMessage("Please Wait....");
 
         databaseReference = FirebaseDatabase.getInstance().getReference("UserDetails");
+
+        myRefDepartmentDetails = FirebaseDatabase.getInstance().getReference("DepartmentDetails").child(departmentName);
 
         myRefStates = FirebaseDatabase.getInstance().getReference("State_Details");
         myRefDistricts = FirebaseDatabase.getInstance().getReference("District_Details");
@@ -353,11 +367,33 @@ public class CreateUserActivity extends AppCompatActivity {
                     while (!uriTask.isSuccessful()) ;
                     Uri downloadUrl = uriTask.getResult();
                     assert downloadUrl != null;
-                    UsersModel usersModel = new UsersModel(downloadUrl.toString(), imageId, name, email, phone, whomToMeet, purposeToMeet, address, state, city, district,checkInTime,checkOutTime,"Check-In");
-                    databaseReference.child(name).setValue(usersModel);
-                    Toast.makeText(CreateUserActivity.this, "Added Successfully", Toast.LENGTH_SHORT).show();
 
+                    myRefDepartmentDetails.addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                            if(dataSnapshot.exists()) {
+                                    deptUsersCount = Objects.requireNonNull(dataSnapshot.getValue(DepartmentModel.class)).getUsersCount();
+                                    deptUsersCount = deptUsersCount + 1;
+                                    dataSnapshot.getRef().child("usersCount").setValue(deptUsersCount);
+                            }  else {
+                                Toast.makeText(CreateUserActivity.this, "No Data Found ", Toast.LENGTH_SHORT).show();
+                            }
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError databaseError) {
+                            Toast.makeText(CreateUserActivity.this, ""+databaseError.getMessage(), Toast.LENGTH_SHORT).show();
+                        }
+                    });
+
+                    UsersModel usersModel = new UsersModel(downloadUrl.toString(), imageId, name, email, phone, whomToMeet, purposeToMeet, address, state, city, district,checkInTime,checkOutTime,"Check-In",departmentName);
+                    assert imageId != null;
+                    databaseReference.child(departmentName).child(imageId).setValue(usersModel);
+                    Toast.makeText(CreateUserActivity.this, "Added Successfully", Toast.LENGTH_SHORT).show();
                     regProgress.dismiss();
+                    Intent intent = new Intent(CreateUserActivity.this,DepartmentHomeActivity.class);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    startActivity(intent);
 
 
                 }

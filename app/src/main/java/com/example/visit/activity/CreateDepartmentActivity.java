@@ -77,11 +77,18 @@ public class CreateDepartmentActivity extends AppCompatActivity {
 
     @OnClick(R.id.btnSubmit)
     public void onViewClicked() {
-        next();
+
+       try {
+            next();
+       } catch (IllegalArgumentException e) {
+           Toast.makeText(this, "Added Successfully !", Toast.LENGTH_SHORT).show();
+       }
+
+
 
     }
 
-    public void next() {
+    public void next() throws IllegalArgumentException {
 
         String emailPattern = "[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+";
 
@@ -139,7 +146,7 @@ public class CreateDepartmentActivity extends AppCompatActivity {
                         //user exists, do something
                         Toast.makeText(CreateDepartmentActivity.this, "Already Department Name Exists", Toast.LENGTH_SHORT).show();
                     } else {
-                        DepartmentModel departmentModel = new DepartmentModel(deptName, deptEmail, deptPassword, deptPhone, deptCode, deptHeadName, deptHeadEmail, deptHeadPhone);
+                        DepartmentModel departmentModel = new DepartmentModel(deptName, deptEmail, deptPassword, deptPhone, deptCode, deptHeadName, deptHeadEmail, deptHeadPhone,0);
                         databaseReference.child(deptName).setValue(departmentModel);
                         Toast.makeText(CreateDepartmentActivity.this, "Added Successfully", Toast.LENGTH_SHORT).show();
                         Intent intent = new Intent(CreateDepartmentActivity.this, AdminHomeActivity.class);

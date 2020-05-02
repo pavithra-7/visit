@@ -60,6 +60,7 @@ public class AdminHomeActivity extends AppCompatActivity {
                 startActivity(new Intent(AdminHomeActivity.this, AdminUserListActivity.class));
                 break;
             case R.id.btnUsersGraph:
+                startActivity(new Intent(AdminHomeActivity.this,AdminUsersGraph.class));
                 break;
             case R.id.btnRegister:
                 Intent intent = new Intent(AdminHomeActivity.this, RegistrationActivity.class);

@@ -18,10 +18,12 @@ import com.example.visit.adapters.DepartmentListAdapter;
 import com.example.visit.adapters.UsersListAdapter;
 import com.example.visit.model.DepartmentModel;
 import com.example.visit.model.UsersModel;
+import com.example.visit.utils.MyAppPrefsManager;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
@@ -41,6 +43,10 @@ public class UserListActivity extends AppCompatActivity {
     String TAG="FIREBASE_DATA";
     DatabaseReference myRef;
     ProgressDialog progressDialog;
+
+    String departmentName;
+    MyAppPrefsManager myAppPrefsManager;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -48,6 +54,10 @@ public class UserListActivity extends AppCompatActivity {
         ButterKnife.bind(this);
         Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setTitle("Users List");
+
+        myAppPrefsManager = new MyAppPrefsManager(this);
+
+        departmentName = myAppPrefsManager.getDepartmentName();
 
         progressDialog = new ProgressDialog(this);
         progressDialog.setMessage("Loading...");
@@ -63,7 +73,8 @@ public class UserListActivity extends AppCompatActivity {
 
     private void data() {
 
-        myRef.addValueEventListener(new ValueEventListener() {
+
+        myRef.child(departmentName).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 

@@ -135,6 +135,7 @@ public class DepartmentListAdapter extends RecyclerView.Adapter<DepartmentListAd
                 bundle.putString("deptHod",departmentModel.getHeadofdep());
                 bundle.putString("deptHeadEmail",departmentModel.getHeadEmail());
                 bundle.putString("deptHeadPhone",departmentModel.getHeadPhone());
+                bundle.putString("deptUsersCount",String.valueOf(departmentModel.getUsersCount()));
                 Intent intent = new Intent(context, UpdateDepartment.class);
                 intent.putExtras(bundle);
                 context.startActivity(intent);

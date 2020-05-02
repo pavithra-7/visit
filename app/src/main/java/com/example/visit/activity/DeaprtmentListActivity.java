@@ -11,6 +11,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
+import android.widget.Toast;
 
 
 import androidx.annotation.NonNull;
@@ -23,6 +24,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.visit.R;
 import com.example.visit.adapters.DepartmentListAdapter;
 import com.example.visit.model.DepartmentModel;
+import com.example.visit.utils.MyAppPrefsManager;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -47,6 +49,8 @@ public class DeaprtmentListActivity extends AppCompatActivity {
     ProgressDialog progressDialog;
 
     String TAG="FIREBASE_DATA";
+
+    MyAppPrefsManager myAppPrefsManager;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -54,6 +58,9 @@ public class DeaprtmentListActivity extends AppCompatActivity {
         ButterKnife.bind(this);
         Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setTitle("Department List");
+
+        myAppPrefsManager = new MyAppPrefsManager(this);
+
 
         progressDialog = new ProgressDialog(this);
         progressDialog.setMessage("Loading...");

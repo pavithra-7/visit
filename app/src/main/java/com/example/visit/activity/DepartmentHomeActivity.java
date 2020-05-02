@@ -12,6 +12,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.visit.R;
+import com.example.visit.UsersGraph;
 import com.example.visit.utils.ConstantValues;
 import com.example.visit.utils.MyAppPrefsManager;
 import com.google.firebase.auth.FirebaseAuth;
@@ -34,6 +35,7 @@ public class DepartmentHomeActivity extends AppCompatActivity {
     Button btnCheckout;*/
     MyAppPrefsManager myAppPrefsManager;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -41,6 +43,9 @@ public class DepartmentHomeActivity extends AppCompatActivity {
         ButterKnife.bind(this);
         Objects.requireNonNull(getSupportActionBar()).setTitle("Department Home Page");
         myAppPrefsManager=new MyAppPrefsManager(DepartmentHomeActivity.this);
+
+
+
     }
 
     @OnClick({R.id.btnCreateUser, R.id.btnUserList, R.id.btnGraph})
@@ -53,6 +58,7 @@ public class DepartmentHomeActivity extends AppCompatActivity {
                 startActivity(new Intent(DepartmentHomeActivity.this,UserListActivity.class));
                 break;
             case R.id.btnGraph:
+                startActivity(new Intent(DepartmentHomeActivity.this, UsersGraph.class));
                 break;
             /*case R.id.btnCheckout:
                 break;*/

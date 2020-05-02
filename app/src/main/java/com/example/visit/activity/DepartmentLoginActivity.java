@@ -106,9 +106,11 @@ public class DepartmentLoginActivity extends AppCompatActivity {
                 if(dataSnapshot.exists()) {
                     for(DataSnapshot dataSnapshot1 :dataSnapshot.getChildren()) {
                         String dbPassword = Objects.requireNonNull(dataSnapshot1.getValue(DepartmentModel.class)).getDepPassword();
+                        String departmentName = Objects.requireNonNull(dataSnapshot1.getValue(DepartmentModel.class)).getDepName();
                         if(dbPassword.equals(password)) {
                             progressDialog.dismiss();
                             myAppPrefsManager.setDepartmentLoggedIn(true);
+                            myAppPrefsManager.setDepartmentName(departmentName);
                             Toast.makeText(DepartmentLoginActivity.this, "Success", Toast.LENGTH_SHORT).show();
                             Intent intent = new Intent(DepartmentLoginActivity.this,DepartmentHomeActivity.class);
                             intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_CLEAR_TOP);

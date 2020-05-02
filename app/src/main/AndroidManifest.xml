@@ -25,7 +25,9 @@
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true"
         tools:targetApi="m">
-        <activity android:name=".activity.AdminUserListActivity"></activity>
+        <activity android:name=".activity.AdminUsersGraph"></activity>
+        <activity android:name=".UsersGraph" />
+        <activity android:name=".activity.AdminUserListActivity" />
         <activity
             android:name=".activity.UpdateDepartment"
             android:screenOrientation="portrait" />
@@ -37,7 +39,7 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".activity.UserListActivity"
-            android:screenOrientation="portrait"></activity>
+            android:screenOrientation="portrait" />
         <activity
             android:name=".activity.DeaprtmentListActivity"
             android:screenOrientation="portrait">

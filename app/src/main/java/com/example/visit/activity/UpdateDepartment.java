@@ -47,7 +47,7 @@ public class UpdateDepartment extends AppCompatActivity {
     @BindView(R.id.btnSubmit)
     Button btnSubmit;
 
-    String deptId,deptName,deptEmail,deptPhone,deptCode,deptPassword,deptHeadName,deptHeadEmail,deptHeadPhone;
+    String deptId,deptName,deptEmail,deptPhone,deptCode,deptPassword,deptHeadName,deptHeadEmail,deptHeadPhone,usersCount;
 
     DatabaseReference databaseReference;
 
@@ -76,6 +76,7 @@ public class UpdateDepartment extends AppCompatActivity {
         String dHod = bundle.getString("deptHod");
         String dHemail = bundle.getString("deptHeadEmail");
         String dHphone= bundle.getString("deptHeadPhone");
+        usersCount = bundle.getString("deptUsersCount");
         deptCode = bundle.getString("deptCode");
         deptId=bundle.getString("deptID");
 
@@ -166,7 +167,7 @@ public class UpdateDepartment extends AppCompatActivity {
             databaseReference.child(deptName).child("headEmail").setValue(deptHeadEmail);
             databaseReference.child(deptName).child("headPhone").setValue(deptHeadPhone);*/
 
-            DepartmentModel departmentModel = new DepartmentModel(deptName, deptEmail, deptPassword, deptPhone, deptCode, deptHeadName, deptHeadEmail, deptHeadPhone);
+            DepartmentModel departmentModel = new DepartmentModel(deptName, deptEmail, deptPassword, deptPhone, deptCode, deptHeadName, deptHeadEmail, deptHeadPhone,Integer.parseInt(usersCount));
             databaseReference.child(deptName).setValue(departmentModel);
 
             Toast.makeText(this, "Details Updated Successfully !", Toast.LENGTH_SHORT).show();

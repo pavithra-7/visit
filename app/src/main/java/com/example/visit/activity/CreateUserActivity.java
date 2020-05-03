@@ -13,6 +13,7 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.provider.Settings;
+import android.text.TextUtils;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
@@ -67,6 +68,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -101,7 +104,7 @@ public class CreateUserActivity extends AppCompatActivity {
     @BindView(R.id.btnSubmit)
     Button btnSubmit;
     DatabaseReference databaseReference;
-   
+
     String name, email, phone, whomToMeet, purposeToMeet, address, state, city, district;
 
     ProgressDialog progressDialog, regProgress;
@@ -111,13 +114,14 @@ public class CreateUserActivity extends AppCompatActivity {
     String departmentName;
 
     int deptUsersCount;
-   
+
 
     String currentDate;
     String currentTime;
 
-    DatabaseReference  myRefStates, myRefDistricts, myRefCities,myRefDepartmentDetails;
+    DatabaseReference myRefStates, myRefDistricts, myRefCities, myRefDepartmentDetails;
     ArrayList<String> stateNameList, districtNameList, cityNameList;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -160,7 +164,7 @@ public class CreateUserActivity extends AppCompatActivity {
         myRefDepartmentDetails.child(departmentName).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                if(dataSnapshot.exists()) {
+                if (dataSnapshot.exists()) {
                     deptUsersCount = Integer.parseInt(Objects.requireNonNull(dataSnapshot.getValue(DepartmentModel.class)).getUserCount());
                     deptUsersCount = deptUsersCount + 1;
                 }
@@ -168,7 +172,7 @@ public class CreateUserActivity extends AppCompatActivity {
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
-                Toast.makeText(CreateUserActivity.this, ""+databaseError.getMessage(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(CreateUserActivity.this, "" + databaseError.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -176,9 +180,6 @@ public class CreateUserActivity extends AppCompatActivity {
         getStates();
         getDistrict("");
         getCity("");
-
-        
-       
 
 
     }
@@ -199,7 +200,7 @@ public class CreateUserActivity extends AppCompatActivity {
                     }
 
                     progressDialog.dismiss();
-                }else {
+                } else {
                     progressDialog.dismiss();
                     stateNameList.clear();
                     stateNameList.add("Select State");
@@ -240,6 +241,7 @@ public class CreateUserActivity extends AppCompatActivity {
     public void getDistrict(String selectedState) {
 
 
+        progressDialog.show();
 
         //Retrieving District Names based on State Selected
         Query query1 = myRefDistricts.orderByChild("state").equalTo(selectedState);
@@ -253,8 +255,10 @@ public class CreateUserActivity extends AppCompatActivity {
                         String districtName = Objects.requireNonNull(dataSnapshot1.getValue(DistrictData.class)).getDistrictname();
                         districtNameList.add(districtName);
                     }
+                    progressDialog.dismiss();
 
-                }else {
+                } else {
+                    progressDialog.dismiss();
                     districtNameList.clear();
                     districtNameList.add("Select District");
                 }
@@ -294,6 +298,7 @@ public class CreateUserActivity extends AppCompatActivity {
 
     public void getCity(String selectedDistrict) {
 
+        progressDialog.show();
         Query query = myRefCities.orderByChild("district").equalTo(selectedDistrict);
         query.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -306,9 +311,9 @@ public class CreateUserActivity extends AppCompatActivity {
                         cityNameList.add(city);
                     }
 
-
-                }
-                else {
+                    progressDialog.dismiss();
+                } else {
+                    progressDialog.dismiss();
                     cityNameList.clear();
                     cityNameList.add("Select City");
                 }
@@ -337,12 +342,10 @@ public class CreateUserActivity extends AppCompatActivity {
         });
 
 
-
     }
 
     public void next() {
 
-        String emailPattern = "[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+";
 
         String imageId = databaseReference.push().getKey();
 
@@ -353,17 +356,19 @@ public class CreateUserActivity extends AppCompatActivity {
         purposeToMeet = Objects.requireNonNull(etPurposetomeet.getText()).toString().trim();
         address = Objects.requireNonNull(etAddress.getText()).toString().trim();
 
-        String checkInTime=currentDate + " "+ currentTime;
-        String checkOutTime="";
+        String checkInTime = currentDate + " " + currentTime;
+        String checkOutTime = "";
 
         if (name.isEmpty()) {
             Toast.makeText(this, "Please enter Name", Toast.LENGTH_SHORT).show();
         } else if (email.isEmpty()) {
             Toast.makeText(this, "Please enter Email ID", Toast.LENGTH_SHORT).show();
-        } else if (emailPattern.matches(email)) {
+        } else if (isValidEmail(email)) {
             Toast.makeText(this, "Please enter Valid Email ID", Toast.LENGTH_SHORT).show();
-        } else if (phone.length() != 10) {
-            Toast.makeText(this, "Please enter Phone", Toast.LENGTH_SHORT).show();
+        } else if (TextUtils.isEmpty(phone)) {
+            Toast.makeText(this, "Please enter  Phone", Toast.LENGTH_SHORT).show();
+        } else if (isValidMoblie(phone)) {
+            Toast.makeText(this, "Please enter Valid Phone", Toast.LENGTH_SHORT).show();
         } else if (whomToMeet.isEmpty()) {
             Toast.makeText(this, "Please enter Whom To Meet", Toast.LENGTH_SHORT).show();
         } else if (purposeToMeet.isEmpty()) {
@@ -384,8 +389,7 @@ public class CreateUserActivity extends AppCompatActivity {
                     assert downloadUrl != null;
 
 
-
-                    UsersModel usersModel = new UsersModel(downloadUrl.toString(), imageId, name, email, phone, whomToMeet, purposeToMeet, address, state, city, district,checkInTime,checkOutTime,"Check-In",departmentName);
+                    UsersModel usersModel = new UsersModel(downloadUrl.toString(), imageId, name, email, phone, whomToMeet, purposeToMeet, address, state, city, district, checkInTime, checkOutTime, "Check-In", departmentName);
                     assert imageId != null;
                     databaseReference.child(departmentName).child(imageId).setValue(usersModel);
 
@@ -394,8 +398,8 @@ public class CreateUserActivity extends AppCompatActivity {
                     myRefDepartmentDetails.child(departmentName).child("userCount").setValue(String.valueOf(deptUsersCount));
 
                     regProgress.dismiss();
-                    Intent intent = new Intent(CreateUserActivity.this,DepartmentHomeActivity.class);
-                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    Intent intent = new Intent(CreateUserActivity.this, DepartmentHomeActivity.class);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     startActivity(intent);
 
 
@@ -634,6 +638,28 @@ public class CreateUserActivity extends AppCompatActivity {
                 cursor.close();
             }
         }
+    }
+
+
+    /*   Validating Fields */
+    // Validating email id
+    public static boolean isValidEmail(String email1) {
+
+        String EMAIL_PATTERN = "^([_A-Za-z0-9-+].{2,})+(\\.[_A-Za-z0-9-]+)*@"
+                + "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
+
+
+        Pattern pattern = Pattern.compile(EMAIL_PATTERN);
+        Matcher matcher = pattern.matcher(email1);
+        return !matcher.matches();
+
+    }
+
+    //Validating Mobile
+    public static boolean isValidMoblie(String pass1) {
+
+        return pass1 == null || pass1.length() != 10;
+
     }
 }
 

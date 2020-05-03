@@ -80,20 +80,21 @@ public class DeaprtmentListActivity extends AppCompatActivity {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
-                departmentModels.clear();
-                for (DataSnapshot issue : dataSnapshot.getChildren()) {
-                    // do something with the individual "issues"
-                    DepartmentModel details = issue.getValue(DepartmentModel.class);
-                    departmentModels.add(details);
+                if (dataSnapshot.exists()) {
+                    departmentModels.clear();
+                    for (DataSnapshot issue : dataSnapshot.getChildren()) {
+                        // do something with the individual "issues"
+                        DepartmentModel details = issue.getValue(DepartmentModel.class);
+                        departmentModels.add(details);
+                    }
+
+                    LinearLayoutManager linearLayoutManager = new LinearLayoutManager(DeaprtmentListActivity.this, RecyclerView.VERTICAL, false);
+                    recyclerDepartment.setLayoutManager(linearLayoutManager);
+                    recyclerDepartment.setHasFixedSize(true);
+                    adapter = new DepartmentListAdapter(departmentModels, DeaprtmentListActivity.this);
+                    recyclerDepartment.setAdapter(adapter);
+                    progressDialog.dismiss();
                 }
-
-                LinearLayoutManager linearLayoutManager = new LinearLayoutManager(DeaprtmentListActivity.this, RecyclerView.VERTICAL, false);
-                recyclerDepartment.setLayoutManager(linearLayoutManager);
-                recyclerDepartment.setHasFixedSize(true);
-                adapter = new DepartmentListAdapter(departmentModels, DeaprtmentListActivity.this);
-                recyclerDepartment.setAdapter(adapter);
-                progressDialog.dismiss();
-
 
             }
 

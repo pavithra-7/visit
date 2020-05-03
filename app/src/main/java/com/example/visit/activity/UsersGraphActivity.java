@@ -9,6 +9,7 @@ import android.view.MenuItem;
 import android.widget.Toast;
 
 import com.example.visit.R;
+import com.example.visit.model.DepartmentModel;
 import com.example.visit.model.UsersModel;
 import com.example.visit.utils.MyAppPrefsManager;
 import com.github.mikephil.charting.charts.BarChart;
@@ -16,6 +17,7 @@ import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
+import com.github.mikephil.charting.formatter.IndexAxisValueFormatter;
 import com.github.mikephil.charting.utils.ColorTemplate;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -24,6 +26,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
@@ -41,8 +44,8 @@ public class UsersGraphActivity extends AppCompatActivity {
     DatabaseReference myRef;
     List<UsersModel> usersModelList;
 
-    final ArrayList<BarEntry> barEntries = new ArrayList<>();
-
+    List<String> deptNamesList;
+    ArrayList<BarEntry> entries = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,6 +58,7 @@ public class UsersGraphActivity extends AppCompatActivity {
         barChart = (BarChart) findViewById(R.id.bargraph);
 
         usersModelList = new ArrayList<>();
+        deptNamesList=new ArrayList<>();
 
         progressDialog = new ProgressDialog(this);
         progressDialog.setMessage("Loading Data...");
@@ -79,34 +83,38 @@ public class UsersGraphActivity extends AppCompatActivity {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 if (dataSnapshot.exists()) {
+                    usersModelList.clear();
+                    deptNamesList.clear();
                     for (DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()) {
                         UsersModel usersModel = dataSnapshot1.getValue(UsersModel.class);
                         usersModelList.add(usersModel);
                     }
 
+
+                    entries.clear();
+                    for (UsersModel departmentModel1 : usersModelList) {
+                        deptNamesList.add(departmentModel1.getDeptName());
+                        entries.add(new BarEntry(0, usersModelList.size()));
+                    }
+
+                    BarDataSet barDataSet = new BarDataSet(entries, "Visitors Data");
+                    barDataSet.setBarBorderWidth(0.9f);
+                    barDataSet.setColors(ColorTemplate.COLORFUL_COLORS);
+                    BarData barData = new BarData(barDataSet);
+                    XAxis xAxis = barChart.getXAxis();
+                    xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
+                    IndexAxisValueFormatter formatter = new IndexAxisValueFormatter(deptNamesList);
+                    xAxis.setValueFormatter(formatter);
+                    barChart.setData(barData);
+                    barChart.setFitBars(true);
+                    barChart.animateXY(3000, 3000);
+                    barChart.invalidate();
+
+
                     progressDialog.dismiss();
 
 
-                    barEntries.add(new BarEntry(usersModelList.size(), 0));
 
-
-                    XAxis xAxis = barChart.getXAxis();
-                    xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
-                    xAxis.setTextSize(15f);
-                    xAxis.setDrawAxisLine(true);
-
-
-                    BarDataSet barDataSet = new BarDataSet(barEntries, "List of Users");
-
-                    ArrayList<String> type = new ArrayList<>();
-                    type.add(departmentName);
-
-                    barDataSet.setColors(ColorTemplate.COLORFUL_COLORS);
-
-                    BarData theData = new BarData(type, barDataSet);
-                    barChart.setData(theData);
-                    barChart.animateXY(3000, 3000);
-                    barChart.setDescription("");
 
                 } else {
                     progressDialog.dismiss();

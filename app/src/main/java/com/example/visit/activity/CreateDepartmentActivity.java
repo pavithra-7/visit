@@ -27,6 +27,8 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -87,7 +89,6 @@ public class CreateDepartmentActivity extends AppCompatActivity {
 
     public void next() throws IllegalArgumentException {
 
-        String emailPattern = "[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+";
 
         deptName = Objects.requireNonNull(etDepartmentName.getText()).toString().trim();
         deptEmail = Objects.requireNonNull(etDepartmentEmail.getText()).toString().trim();
@@ -102,19 +103,24 @@ public class CreateDepartmentActivity extends AppCompatActivity {
             Toast.makeText(this, "Please enter Department Name", Toast.LENGTH_SHORT).show();
         } else if (deptEmail.isEmpty()) {
             Toast.makeText(this,"Please enter Department Email ID",Toast.LENGTH_SHORT).show();
-        } else if (emailPattern.matches(deptEmail)) {
+        } else if (isValidEmail(deptEmail)) {
             Toast.makeText(this,"Please enter Valid Department Email",Toast.LENGTH_SHORT).show();
         } else if (deptPhone.isEmpty()) {
             Toast.makeText(this,"Please enter Department Phone",Toast.LENGTH_SHORT).show();
-        } else if (deptPassword.isEmpty()) {
+        } else if (isValidMoblie(deptPhone)) {
+            Toast.makeText(this,"Please enter Valid Phone",Toast.LENGTH_SHORT).show();
+        }else if (deptPassword.isEmpty()) {
             Toast.makeText(this,"Please enter Password",Toast.LENGTH_SHORT).show();
         } else if (deptHeadName.isEmpty()) {
             Toast.makeText(this,"Please enter HOD Name",Toast.LENGTH_SHORT).show();
         } else if (deptHeadEmail.isEmpty()) {
             Toast.makeText(this,"Please enter HOD Email",Toast.LENGTH_SHORT).show();
+        } else if (isValidEmail(deptHeadEmail)) {
+            Toast.makeText(this,"Please enter HOD Email",Toast.LENGTH_SHORT).show();
         } else if (deptHeadPhone.isEmpty()) {
             Toast.makeText(this,"Please enter HOD Phone",Toast.LENGTH_SHORT).show();
-
+        }else if (isValidMoblie(deptHeadPhone)) {
+            Toast.makeText(this,"Please enter Valid HOD Phone",Toast.LENGTH_SHORT).show();
         } else {
 
             String firstThreeChars = "";     //substring containing first 3 characters
@@ -162,6 +168,27 @@ public class CreateDepartmentActivity extends AppCompatActivity {
         }
     }
 
+    /*   Validating Fields */
+    // Validating email id
+    public static boolean isValidEmail(String email1) {
+
+        String EMAIL_PATTERN = "^([_A-Za-z0-9-+].{2,})+(\\.[_A-Za-z0-9-]+)*@"
+                + "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
+
+
+
+        Pattern pattern = Pattern.compile(EMAIL_PATTERN);
+        Matcher matcher = pattern.matcher(email1);
+        return !matcher.matches();
+
+    }
+
+    //Validating Mobile
+    public  static boolean isValidMoblie(String pass1) {
+
+        return pass1 == null || pass1.length() != 10;
+
+    }
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         if (item.getItemId() == android.R.id.home) {

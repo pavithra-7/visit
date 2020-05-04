@@ -10,6 +10,7 @@
     <string name="admin_login">Admin Login</string>
     <string name="department_login">Department Login</string>
     <string name="no_data_found">No Data Found</string>
+    <string name="click_above_camera_icon_to_upload_image">Click Above Camera Icon to Upload Image*.</string>
 
     <string-array name="states">
         <item>Choose State</item>

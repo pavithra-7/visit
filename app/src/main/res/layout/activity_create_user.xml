@@ -21,7 +21,8 @@
             android:scaleType="fitXY"
             android:layout_gravity="center_horizontal"
             android:background="@drawable/rounde_corners"
-            android:src="@drawable/ic_camera_alt_black_24dp" />
+            android:src="@drawable/ic_camera_alt_black_24dp"
+            android:contentDescription="@string/app_name" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -29,7 +30,7 @@
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="10dp"
             android:textColor="@android:color/holo_red_light"
-            android:text="click Above camera icon to upload image*."/>
+            android:text="@string/click_above_camera_icon_to_upload_image"/>
 
         <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"

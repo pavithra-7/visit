@@ -78,9 +78,11 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".activity.DepartmentHomeActivity"
+            android:theme="@style/AppThemeNav"
             android:screenOrientation="portrait" />
         <activity
             android:name=".activity.AdminHomeActivity"
+            android:theme="@style/AppThemeNav"
             android:screenOrientation="portrait" />
         <activity
             android:name=".activity.AdminLoginActivity"

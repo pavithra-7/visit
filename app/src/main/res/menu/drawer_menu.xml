@@ -3,17 +3,22 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:showIn="navigation_view">
 
-    <group android:checkableBehavior="single"
-        >
+    <group android:checkableBehavior="single">
         <item
-            android:id="@+id/createdept"
+            android:id="@+id/createDepartment"
+            android:title="Create Department"/>
+        <item
+            android:id="@+id/listDepartment"
+            android:title="List of Departments"/>
+        <item
+            android:id="@+id/listUsers"
+            android:title="List of Users"/>
+        <item
+            android:id="@+id/viewGraph"
+            android:title="Users Graph"/>
+        <item
+            android:id="@+id/addMasterData"
+            android:title="Add Master Data"/>
 
-            android:title="Create Department"></item>
-        <item
-            android:id="@+id/listdept"
-            android:title="List of Department"></item>
-        <item
-            android:id="@+id/edit"
-            android:title="Edit"></item>
     </group>
 </menu>

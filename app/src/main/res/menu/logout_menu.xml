@@ -5,6 +5,6 @@
     <item
         android:id="@+id/actionLogout"
         android:title="Logout"
-        app:showAsAction="ifRoom|collapseActionView" />
+        app:showAsAction="never" />
 
 </menu>

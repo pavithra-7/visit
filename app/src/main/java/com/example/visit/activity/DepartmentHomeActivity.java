@@ -6,14 +6,21 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.core.view.GravityCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
 
 import com.example.visit.R;
 import com.example.visit.utils.ConstantValues;
 import com.example.visit.utils.MyAppPrefsManager;
+import com.google.android.material.appbar.AppBarLayout;
+import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.Objects;
@@ -22,49 +29,71 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class DepartmentHomeActivity extends AppCompatActivity {
+public class DepartmentHomeActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
-    @BindView(R.id.btnCreateUser)
-    Button btnCreateUser;
-    @BindView(R.id.btnUserList)
-    Button btnUserList;
-    @BindView(R.id.btnGraph)
+
     Button btnGraph;
     MyAppPrefsManager myAppPrefsManager;
-
+    @BindView(R.id.toolbar)
+    Toolbar toolbar;
+    @BindView(R.id.appbar)
+    AppBarLayout appbar;
+    @BindView(R.id.nav_view)
+    NavigationView navView;
+    @BindView(R.id.drawer_layout)
+    DrawerLayout drawerLayout;
+    String departmentName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_department_home);
+        setContentView(R.layout.activity_user_main);
         ButterKnife.bind(this);
-        Objects.requireNonNull(getSupportActionBar()).setTitle("Department Home Page");
-        Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
-        myAppPrefsManager=new MyAppPrefsManager(DepartmentHomeActivity.this);
+        myAppPrefsManager = new MyAppPrefsManager(DepartmentHomeActivity.this);
+        departmentName = myAppPrefsManager.getDepartmentName();
+        setSupportActionBar(toolbar);
 
+        Objects.requireNonNull(getSupportActionBar()).setTitle("Department Home Page");
+
+        NavigationView navigationView = findViewById(R.id.nav_view);
+
+
+        navigationView.setNavigationItemSelectedListener(this);
+
+        View headerView = navigationView.getHeaderView(0);
+        TextView navUsername = (TextView) headerView.findViewById(R.id.textEmail);
+        navUsername.setText(departmentName);
+
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar,
+                R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        drawerLayout.addDrawerListener(toggle);
+        toggle.syncState();
 
     }
 
-    @OnClick({R.id.btnCreateUser, R.id.btnUserList, R.id.btnGraph})
-    public void onViewClicked(View view) {
-        switch (view.getId()) {
-            case R.id.btnCreateUser:
-                Intent intent=new Intent(DepartmentHomeActivity.this,CreateUserActivity.class);
-                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_CLEAR_TOP);
+    @Override
+    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.createUsers:
+                Intent intent = new Intent(DepartmentHomeActivity.this, CreateUserActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent);
                 break;
-            case R.id.btnUserList:
-                Intent intent1=new Intent(DepartmentHomeActivity.this,UserListActivity.class);
-                intent1.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            case R.id.listUsers:
+                Intent intent1 = new Intent(DepartmentHomeActivity.this, UserListActivity.class);
+                intent1.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent1);
                 break;
-            case R.id.btnGraph:
-                Intent intent2=new Intent(DepartmentHomeActivity.this, UsersGraphActivity.class);
-                intent2.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            case R.id.viewGraph:
+                Intent intent2 = new Intent(DepartmentHomeActivity.this, UsersGraphActivity.class);
+                intent2.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent2);
                 break;
 
+
         }
+        drawerLayout.closeDrawer(GravityCompat.START);
+        return true;
     }
 
     @Override
@@ -75,7 +104,7 @@ public class DepartmentHomeActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        switch (item.getItemId()){
+        switch (item.getItemId()) {
             case R.id.actionLogout:
                 Toast.makeText(this, "Logout Successfully", Toast.LENGTH_SHORT).show();
                 FirebaseAuth.getInstance().signOut();

@@ -45,6 +45,8 @@ public class UsersGraphActivity extends AppCompatActivity {
     List<UsersModel> usersModelList;
 
     List<String> deptNamesList;
+    List<String> deptMaleList;
+    List<String> deptFemaleList;
     ArrayList<BarEntry> entries = new ArrayList<>();
 
     @Override
@@ -59,6 +61,8 @@ public class UsersGraphActivity extends AppCompatActivity {
 
         usersModelList = new ArrayList<>();
         deptNamesList=new ArrayList<>();
+        deptMaleList=new ArrayList<>();
+        deptFemaleList=new ArrayList<>();
 
         progressDialog = new ProgressDialog(this);
         progressDialog.setMessage("Loading Data...");
@@ -85,31 +89,52 @@ public class UsersGraphActivity extends AppCompatActivity {
                 if (dataSnapshot.exists()) {
                     usersModelList.clear();
                     deptNamesList.clear();
+                    deptMaleList.clear();
+                    deptFemaleList.clear();
                     for (DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()) {
                         UsersModel usersModel = dataSnapshot1.getValue(UsersModel.class);
                         usersModelList.add(usersModel);
                     }
 
-
                     entries.clear();
                     for (UsersModel departmentModel1 : usersModelList) {
                         deptNamesList.add(departmentModel1.getDeptName());
-                        entries.add(new BarEntry(0, usersModelList.size()));
+
+                        String gender=(departmentModel1.getGender());
+
+                        if (gender.equalsIgnoreCase("Male")){
+                            deptMaleList.add(gender);
+                        }
+                        if (gender.equalsIgnoreCase("Female")){
+                            deptFemaleList.add(gender);
+                        }
+
                     }
 
+
+
+                    String maleCount= String.valueOf(deptMaleList.size());
+                    String femaleCount= String.valueOf(deptFemaleList.size());
+
+                    entries.clear();
+                    entries.add(new BarEntry(0,Float.parseFloat(maleCount)));
+                    entries.add(new BarEntry(1,Float.parseFloat(femaleCount)));
+
+
                     BarDataSet barDataSet = new BarDataSet(entries, "Visitors Data");
-                    barDataSet.setBarBorderWidth(0.9f);
+                    barDataSet.setBarBorderWidth(1f);
                     barDataSet.setColors(ColorTemplate.COLORFUL_COLORS);
                     BarData barData = new BarData(barDataSet);
                     XAxis xAxis = barChart.getXAxis();
                     xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
+                    String[] deptNamesList = new String[]{"Male Visitors","Female Visitors"};
                     IndexAxisValueFormatter formatter = new IndexAxisValueFormatter(deptNamesList);
+                    xAxis.setGranularity(1f);
                     xAxis.setValueFormatter(formatter);
                     barChart.setData(barData);
                     barChart.setFitBars(true);
                     barChart.animateXY(3000, 3000);
                     barChart.invalidate();
-
 
                     progressDialog.dismiss();
 

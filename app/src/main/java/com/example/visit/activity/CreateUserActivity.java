@@ -20,6 +20,8 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.Toast;
 
@@ -103,9 +105,11 @@ public class CreateUserActivity extends AppCompatActivity {
     Spinner spinDistrict;
     @BindView(R.id.btnSubmit)
     Button btnSubmit;
+    @BindView(R.id.radioGender)
+    RadioGroup radioGender;
     DatabaseReference databaseReference;
 
-    String name, email, phone, whomToMeet, purposeToMeet, address, state, city, district;
+    String name, email, phone, gender,  whomToMeet, purposeToMeet, address, state, city, district;
 
     ProgressDialog progressDialog, regProgress;
     StorageReference storageReference;
@@ -114,7 +118,7 @@ public class CreateUserActivity extends AppCompatActivity {
     String departmentName;
 
     int deptUsersCount;
-
+    RadioButton radioButton;
 
     String currentDate;
     String currentTime;
@@ -349,9 +353,13 @@ public class CreateUserActivity extends AppCompatActivity {
 
         String imageId = databaseReference.push().getKey();
 
+        int selctedId = radioGender.getCheckedRadioButtonId();
+        radioButton = (RadioButton) findViewById(selctedId);
+
         name = Objects.requireNonNull(etName.getText()).toString().trim();
         email = Objects.requireNonNull(etEmail.getText()).toString().trim();
         phone = Objects.requireNonNull(etPhone.getText()).toString().trim();
+        gender = radioButton.getText().toString();
         whomToMeet = Objects.requireNonNull(etWhomtomeet.getText()).toString().trim();
         purposeToMeet = Objects.requireNonNull(etPurposetomeet.getText()).toString().trim();
         address = Objects.requireNonNull(etAddress.getText()).toString().trim();
@@ -367,7 +375,9 @@ public class CreateUserActivity extends AppCompatActivity {
             Toast.makeText(this, "Please enter Valid Email ID", Toast.LENGTH_SHORT).show();
         } else if (TextUtils.isEmpty(phone)) {
             Toast.makeText(this, "Please enter  Phone", Toast.LENGTH_SHORT).show();
-        } else if (isValidMoblie(phone)) {
+        } else if (gender.isEmpty()) {
+            Toast.makeText(CreateUserActivity.this, "Please choose Gender", Toast.LENGTH_SHORT).show();
+        }else if (isValidMoblie(phone)) {
             Toast.makeText(this, "Please enter Valid Phone", Toast.LENGTH_SHORT).show();
         } else if (whomToMeet.isEmpty()) {
             Toast.makeText(this, "Please enter Whom To Meet", Toast.LENGTH_SHORT).show();
@@ -389,7 +399,7 @@ public class CreateUserActivity extends AppCompatActivity {
                     assert downloadUrl != null;
 
 
-                    UsersModel usersModel = new UsersModel(downloadUrl.toString(), imageId, name, email, phone, whomToMeet, purposeToMeet, address, state, city, district, checkInTime, checkOutTime, "Check-In", departmentName);
+                    UsersModel usersModel = new UsersModel(downloadUrl.toString(), imageId, name, email, phone,gender, whomToMeet, purposeToMeet, address, state, city, district, checkInTime, checkOutTime, "Check-In", departmentName);
                     assert imageId != null;
                     databaseReference.child(departmentName).child(imageId).setValue(usersModel);
 

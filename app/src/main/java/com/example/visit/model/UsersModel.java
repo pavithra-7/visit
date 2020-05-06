@@ -10,6 +10,7 @@ public class UsersModel {
     private String name;
     private String  email;
     private String phone;
+    private String gender;
     private String whomToMeet;
     private String purposeToMeet;
     private String address;
@@ -27,12 +28,13 @@ public class UsersModel {
     }
 
 
-    public UsersModel(String imageUrl,String imageId,String name, String email, String phone, String whomToMeet, String purposeToMeet, String address, String state, String city, String district,String checkInTime,String checkOutTime,String status,String deptName) {
+    public UsersModel(String imageUrl,String imageId,String name, String email, String phone, String gender,String whomToMeet, String purposeToMeet, String address, String state, String city, String district,String checkInTime,String checkOutTime,String status,String deptName) {
         userId = count.incrementAndGet();
         this.imageId = imageId;
         this.name = name;
         this.email = email;
         this.phone = phone;
+        this.gender = gender;
         this.whomToMeet = whomToMeet;
         this.purposeToMeet = purposeToMeet;
         this.address = address;
@@ -44,6 +46,14 @@ public class UsersModel {
         this.checkOutTime = checkOutTime;
         this.status = status;
         this.deptName = deptName;
+    }
+
+    public String getGender() {
+        return gender;
+    }
+
+    public void setGender(String gender) {
+        this.gender = gender;
     }
 
     public String getDeptName() {

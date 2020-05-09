@@ -6,6 +6,7 @@
     android:layout_height="match_parent"
     android:gravity="center"
     android:orientation="vertical"
+    android:background="@drawable/three"
     android:padding="20dp"
     tools:context=".activity.AddDistrictActivity">
 
@@ -29,6 +30,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="Dist Name"
+            android:textSize="15dp"
+            android:textColorHint="@android:color/black"
+            android:textColor="@android:color/black"
             android:inputType="textCapWords" />
 
 
@@ -37,12 +41,13 @@
 
     <Button
         android:id="@+id/btnSubmit"
-        android:layout_width="match_parent"
+        android:layout_width="200dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
-        android:background="@color/colorAccent"
+        android:background="@android:color/white"
         android:text="Submit"
-        android:textColor="@color/colorWhite" />
+        android:textSize="15dp"
+        android:textColor="@android:color/black" />
 
 
 </LinearLayout>

@@ -1,10 +1,12 @@
 package com.example.visit.activity;
 
 import android.content.Intent;
+import android.graphics.drawable.AnimationDrawable;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -49,6 +51,11 @@ public class AdminHomeActivity extends AppCompatActivity implements NavigationVi
         setSupportActionBar(toolbar);
 
         Objects.requireNonNull(getSupportActionBar()).setTitle("Admin Home Page");
+        LinearLayout myl = findViewById(R.id.mylayout);
+        AnimationDrawable animationDrawable = (AnimationDrawable) myl.getBackground();
+        animationDrawable.setEnterFadeDuration(3500);
+        animationDrawable.setExitFadeDuration(3500);
+        animationDrawable.start();
 
         NavigationView navigationView = findViewById(R.id.nav_view);
 

@@ -1,11 +1,13 @@
 package com.example.visit.activity;
 
 import android.content.Intent;
+import android.graphics.drawable.AnimationDrawable;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -59,7 +61,11 @@ public class DepartmentHomeActivity extends AppCompatActivity implements Navigat
 
 
         navigationView.setNavigationItemSelectedListener(this);
-
+        LinearLayout myl = findViewById(R.id.mylayout);
+        AnimationDrawable animationDrawable = (AnimationDrawable) myl.getBackground();
+        animationDrawable.setEnterFadeDuration(4500);
+        animationDrawable.setExitFadeDuration(4500);
+        animationDrawable.start();
         View headerView = navigationView.getHeaderView(0);
         TextView navUsername = (TextView) headerView.findViewById(R.id.textEmail);
         navUsername.setText(departmentName);

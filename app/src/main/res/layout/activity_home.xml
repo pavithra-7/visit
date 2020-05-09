@@ -4,27 +4,31 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/three"
     android:gravity="center"
-    android:layout_margin="10dp"
     android:orientation="vertical"
     tools:context=".activity.HomeActivity">
 
     <Button
         android:id="@+id/btnAdminLogin"
-        android:layout_width="match_parent"
+        android:layout_width="250dp"
         android:layout_height="wrap_content"
-        android:textColor="@color/colorWhite"
+        android:textColor="@android:color/black"
         android:layout_margin="4dp"
+        android:textSize="15dp"
+        android:elevation="10dp"
         android:text="@string/admin_login"
         android:background="@drawable/radio_flat_selected"/>
 
     <Button
         android:id="@+id/btnDepartmentLogin"
-        android:layout_width="match_parent"
+        android:layout_width="250dp"
         android:layout_height="wrap_content"
-        android:textColor="@color/colorPrimaryDark"
+        android:elevation="10dp"
+        android:textColor="@android:color/black"
         android:text="@string/department_login"
-        android:layout_margin="4dp"
-        android:background="@drawable/radio_flat_regular"/>
+        android:layout_margin="20dp"
+        android:textSize="15dp"
+        android:background="@drawable/radio_flat_selected"/>
 
 </LinearLayout>

@@ -15,7 +15,7 @@
             android:title="List of Users"/>
         <item
             android:id="@+id/viewGraph"
-            android:title="Users Graph"/>
+            android:title="View Graph"/>
         <item
             android:id="@+id/addMasterData"
             android:title="Add Master Data"/>

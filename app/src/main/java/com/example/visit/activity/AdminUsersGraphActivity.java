@@ -92,12 +92,13 @@ public class AdminUsersGraphActivity extends AppCompatActivity {
                     }
 
                     BarDataSet barDataSet = new BarDataSet(entries, "Visitors Data");
-                    barDataSet.setBarBorderWidth(0.9f);
+                    barDataSet.setBarBorderWidth(1f);
                     barDataSet.setColors(ColorTemplate.COLORFUL_COLORS);
                     BarData barData = new BarData(barDataSet);
                     XAxis xAxis = barChart.getXAxis();
                     xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
                     IndexAxisValueFormatter formatter = new IndexAxisValueFormatter(deptNamesList);
+                    xAxis.setGranularity(1f);
                     xAxis.setValueFormatter(formatter);
                     barChart.setData(barData);
                     barChart.setFitBars(true);

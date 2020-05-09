@@ -59,7 +59,7 @@ public class DepartmentListAdapter extends RecyclerView.Adapter<DepartmentListAd
 
                     for (DepartmentModel androidVersion : departmentModelList) {
 
-                        if (androidVersion.getDepName().toLowerCase().contains(charString)  ) {
+                        if (androidVersion.getDepName().toLowerCase().contains(charString) || String.valueOf(androidVersion.getDepID()).contains(charString)){
 
                             filteredList.add(androidVersion);
                         }

@@ -471,7 +471,7 @@ public class CreateUserActivity extends AppCompatActivity {
     /**
      * Alert dialog for capture or select from galley
      */
-    private void selectImage() {
+  /*  private void selectImage() {
         final CharSequence[] items = {"Take Photo", "Choose from Library",
                 "Cancel"};
         android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(CreateUserActivity.this);
@@ -483,6 +483,20 @@ public class CreateUserActivity extends AppCompatActivity {
                     requestStoragePermission(false);
                 }
             } else if (items[item].equals("Cancel")) {
+                dialog.dismiss();
+            }
+        });
+        builder.show();
+    }*/
+    private void selectImage() {
+        final CharSequence[] items = {"Take Photo",
+                "Cancel"};
+        android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(CreateUserActivity.this);
+        builder.setItems(items, (dialog, item) -> {
+            if (items[item].equals("Take Photo")) {
+                requestStoragePermission(true);
+            }
+             else if (items[item].equals("Cancel")) {
                 dialog.dismiss();
             }
         });

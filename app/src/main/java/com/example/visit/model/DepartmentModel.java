@@ -19,6 +19,20 @@ public class DepartmentModel {
 
     public DepartmentModel() {
     }
+    public DepartmentModel(int deptID,String depName, String depMail, String depPassword, String depPhone, String depCode, String headofdep, String headEmail, String headPhone, String userCount) {
+        this.depID=deptID;
+        this.depName = depName;
+        this.depMail = depMail;
+        this.depPassword = depPassword;
+        this.depPhone = depPhone;
+        this.depCode = depCode;
+        this.headofdep = headofdep;
+        this.headEmail = headEmail;
+        this.headPhone = headPhone;
+        this.userCount = userCount;
+
+    }
+
 
     public DepartmentModel( String depName, String depMail,String depPassword, String depPhone, String depCode, String headofdep, String headEmail, String headPhone,String userCount) {
         depID = count.incrementAndGet();

@@ -161,7 +161,7 @@ public class UpdateDepartmentActivity extends AppCompatActivity {
             databaseReference.child(deptName).child("headEmail").setValue(deptHeadEmail);
             databaseReference.child(deptName).child("headPhone").setValue(deptHeadPhone);*/
 
-            DepartmentModel departmentModel = new DepartmentModel(deptName, deptEmail, deptPassword, deptPhone, deptCode, deptHeadName, deptHeadEmail, deptHeadPhone,usersCount);
+            DepartmentModel departmentModel = new DepartmentModel(Integer.parseInt(deptId),deptName, deptEmail, deptPassword, deptPhone, deptCode, deptHeadName, deptHeadEmail, deptHeadPhone,usersCount);
             databaseReference.child(deptName).setValue(departmentModel);
 
             Toast.makeText(this, "Details Updated Successfully !", Toast.LENGTH_SHORT).show();

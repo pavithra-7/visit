@@ -4,8 +4,8 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 public class DepartmentModel {
 
-    private static final AtomicInteger count = new AtomicInteger(0);
-    private int depID;
+
+    private String depID;
     private String depName;
     private String depMail;
     private String depPassword;
@@ -19,7 +19,7 @@ public class DepartmentModel {
 
     public DepartmentModel() {
     }
-    public DepartmentModel(int deptID,String depName, String depMail, String depPassword, String depPhone, String depCode, String headofdep, String headEmail, String headPhone, String userCount) {
+    public DepartmentModel(String deptID,String depName, String depMail, String depPassword, String depPhone, String depCode, String headofdep, String headEmail, String headPhone, String userCount) {
         this.depID=deptID;
         this.depName = depName;
         this.depMail = depMail;
@@ -34,19 +34,6 @@ public class DepartmentModel {
     }
 
 
-    public DepartmentModel( String depName, String depMail,String depPassword, String depPhone, String depCode, String headofdep, String headEmail, String headPhone,String userCount) {
-        depID = count.incrementAndGet();
-        this.depName = depName;
-        this.depMail = depMail;
-        this.depPassword = depPassword;
-        this.depPhone = depPhone;
-        this.depCode = depCode;
-        this.headofdep = headofdep;
-        this.headEmail = headEmail;
-        this.headPhone = headPhone;
-        this.userCount = userCount;
-
-    }
 
     public DepartmentModel(String depPhone, String headofdep, String headEmail, String headPhone) {
         this.depPhone = depPhone;
@@ -56,11 +43,11 @@ public class DepartmentModel {
     }
 
 
-    public int getDepID() {
+    public String getDepID() {
         return depID;
     }
 
-    public void setDepID(int depID) {
+    public void setDepID(String depID) {
         this.depID = depID;
     }
 

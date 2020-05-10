@@ -81,14 +81,18 @@ public class AdminUsersGraphActivity extends AppCompatActivity {
                     for (DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()) {
                         DepartmentModel departmentModel = dataSnapshot1.getValue(DepartmentModel.class);
                         deptUsersModelList.add(departmentModel);
-
                     }
 
                     entries.clear();
-                    for (DepartmentModel departmentModel1 : deptUsersModelList) {
+                    /*for (DepartmentModel departmentModel1 : deptUsersModelList) {
                         deptNamesList.add(departmentModel1.getDepName());
                         int value=departmentModel1.getDepID()-1;
-                        entries.add(new BarEntry(value, Float.parseFloat(departmentModel1.getUserCount())));
+                        entries.add(new BarEntry(deptNamesList.get(i), Float.parseFloat(departmentModel1.getUserCount())));
+                    }*/
+
+                    for(int i=0;i<deptUsersModelList.size();i++) {
+                        deptNamesList.add(deptUsersModelList.get(i).getDepName());
+                        entries.add(new BarEntry(i,Float.parseFloat(deptUsersModelList.get(i).getUserCount())));
                     }
 
                     BarDataSet barDataSet = new BarDataSet(entries, "Visitors Data");

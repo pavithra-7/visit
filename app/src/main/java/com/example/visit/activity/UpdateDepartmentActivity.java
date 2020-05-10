@@ -153,15 +153,8 @@ public class UpdateDepartmentActivity extends AppCompatActivity {
             }
             deptCode = (firstThreeChars + "_" + lastThreeDigits).toUpperCase();
 
-           /* databaseReference.child(deptName).child("depName").setValue(deptName);
-            databaseReference.child(deptName).child("depMail").setValue(deptEmail);
-            databaseReference.child(deptName).child("depPhone").setValue(deptPhone);
-            databaseReference.child(deptName).child("depPassword").setValue(deptPassword);
-            databaseReference.child(deptName).child("headofdep").setValue(deptHeadName);
-            databaseReference.child(deptName).child("headEmail").setValue(deptHeadEmail);
-            databaseReference.child(deptName).child("headPhone").setValue(deptHeadPhone);*/
 
-            DepartmentModel departmentModel = new DepartmentModel(Integer.parseInt(deptId),deptName, deptEmail, deptPassword, deptPhone, deptCode, deptHeadName, deptHeadEmail, deptHeadPhone,usersCount);
+            DepartmentModel departmentModel = new DepartmentModel(deptId,deptName, deptEmail, deptPassword, deptPhone, deptCode, deptHeadName, deptHeadEmail, deptHeadPhone,usersCount);
             databaseReference.child(deptName).setValue(departmentModel);
 
             Toast.makeText(this, "Details Updated Successfully !", Toast.LENGTH_SHORT).show();

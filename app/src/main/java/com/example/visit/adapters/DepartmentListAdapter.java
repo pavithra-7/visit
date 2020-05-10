@@ -82,8 +82,6 @@ public class DepartmentListAdapter extends RecyclerView.Adapter<DepartmentListAd
     }
 
     static class MyViewHolder extends RecyclerView.ViewHolder {
-        @BindView(R.id.txtDepId)
-        TextView txtDepId;
         @BindView(R.id.txtDepName)
         TextView txtDepName;
         @BindView(R.id.txtDepEmail)
@@ -116,7 +114,7 @@ public class DepartmentListAdapter extends RecyclerView.Adapter<DepartmentListAd
     @Override
     public void onBindViewHolder(MyViewHolder holder, int position) {
         DepartmentModel departmentModel = departmentModelListFull.get(position);
-        holder.txtDepId.setText("Department ID : " + departmentModel.getDepID());
+
         holder.txtDepName.setText("Department Name : " + departmentModel.getDepName());
         holder.txtDepEmail.setText("Department Email : " + departmentModel.getDepMail());
         holder.txtDepCode.setText("Department Code : " + departmentModel.getDepCode());
@@ -126,7 +124,7 @@ public class DepartmentListAdapter extends RecyclerView.Adapter<DepartmentListAd
             @Override
             public void onClick(View view) {
                 Bundle bundle = new Bundle();
-                bundle.putString("deptID",Integer.toString(departmentModel.getDepID()));
+                bundle.putString("deptID",departmentModel.getDepID());
                 bundle.putString("deptName",departmentModel.getDepName());
                 bundle.putString("deptEmail",departmentModel.getDepMail());
                 bundle.putString("deptCode",departmentModel.getDepCode());

@@ -140,6 +140,8 @@ public class CreateDepartmentActivity extends AppCompatActivity {
             }
             deptCode = (firstThreeChars + "_" + lastThreeDigits).toUpperCase();
 
+            deptId=databaseReference.push().getKey();
+
             databaseReference.child(deptName).addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -147,7 +149,7 @@ public class CreateDepartmentActivity extends AppCompatActivity {
                         //user exists, do something
                         Toast.makeText(CreateDepartmentActivity.this, "Already Department Name Exists", Toast.LENGTH_SHORT).show();
                     } else {
-                        DepartmentModel departmentModel = new DepartmentModel(deptName, deptEmail, deptPassword, deptPhone, deptCode, deptHeadName, deptHeadEmail, deptHeadPhone,"0");
+                        DepartmentModel departmentModel = new DepartmentModel(deptId,deptName, deptEmail, deptPassword, deptPhone, deptCode, deptHeadName, deptHeadEmail, deptHeadPhone,"0");
                         databaseReference.child(deptName).setValue(departmentModel);
                         Toast.makeText(CreateDepartmentActivity.this, "Added Successfully", Toast.LENGTH_SHORT).show();
                         Intent intent = new Intent(CreateDepartmentActivity.this, AdminHomeActivity.class);

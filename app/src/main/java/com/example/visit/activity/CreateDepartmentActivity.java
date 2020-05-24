@@ -70,6 +70,8 @@ public class CreateDepartmentActivity extends AppCompatActivity {
         ButterKnife.bind(this);
         Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setTitle("Create Department");
+
+        //Creating the table name  in database
         databaseReference = FirebaseDatabase.getInstance().getReference("DepartmentDetails");
 
     }
@@ -142,6 +144,8 @@ public class CreateDepartmentActivity extends AppCompatActivity {
 
             deptId=databaseReference.push().getKey();
 
+
+           //for retrieving department Name
             databaseReference.child(deptName).addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot snapshot) {

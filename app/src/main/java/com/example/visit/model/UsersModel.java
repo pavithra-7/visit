@@ -4,8 +4,8 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 public class UsersModel {
 
-    private static final AtomicInteger count = new AtomicInteger(0);
-    private int userId;
+
+    private String userId;
     private String imageId;
     private String name;
     private String  email;
@@ -28,8 +28,8 @@ public class UsersModel {
     }
 
 
-    public UsersModel(String imageUrl,String imageId,String name, String email, String phone, String gender,String whomToMeet, String purposeToMeet, String address, String state, String city, String district,String checkInTime,String checkOutTime,String status,String deptName) {
-        userId = count.incrementAndGet();
+    public UsersModel(String userId,String imageUrl,String imageId,String name, String email, String phone, String gender,String whomToMeet, String purposeToMeet, String address, String state, String city, String district,String checkInTime,String checkOutTime,String status,String deptName) {
+        this.userId = userId;
         this.imageId = imageId;
         this.name = name;
         this.email = email;
@@ -96,11 +96,11 @@ public class UsersModel {
         this.imageId = imageId;
     }
 
-    public int getUserId() {
+    public String getUserId() {
         return userId;
     }
 
-    public void setUserId(int userId) {
+    public void setUserId(String userId) {
         this.userId = userId;
     }
 

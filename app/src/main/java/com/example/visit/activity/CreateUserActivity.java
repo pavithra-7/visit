@@ -109,7 +109,7 @@ public class CreateUserActivity extends AppCompatActivity {
     RadioGroup radioGender;
     DatabaseReference databaseReference;
 
-    String name, email, phone, gender,  whomToMeet, purposeToMeet, address, state, city, district;
+    String name, email, phone, gender, whomToMeet, purposeToMeet, address, state, city, district;
 
     ProgressDialog progressDialog, regProgress;
     StorageReference storageReference;
@@ -351,8 +351,6 @@ public class CreateUserActivity extends AppCompatActivity {
     public void next() {
 
 
-        String imageId = databaseReference.push().getKey();
-
         int selctedId = radioGender.getCheckedRadioButtonId();
         radioButton = (RadioButton) findViewById(selctedId);
 
@@ -363,6 +361,7 @@ public class CreateUserActivity extends AppCompatActivity {
         whomToMeet = Objects.requireNonNull(etWhomtomeet.getText()).toString().trim();
         purposeToMeet = Objects.requireNonNull(etPurposetomeet.getText()).toString().trim();
         address = Objects.requireNonNull(etAddress.getText()).toString().trim();
+
 
         String checkInTime = currentDate + " " + currentTime;
         String checkOutTime = "";
@@ -377,7 +376,7 @@ public class CreateUserActivity extends AppCompatActivity {
             Toast.makeText(this, "Please enter  Phone", Toast.LENGTH_SHORT).show();
         } else if (gender.isEmpty()) {
             Toast.makeText(CreateUserActivity.this, "Please choose Gender", Toast.LENGTH_SHORT).show();
-        }else if (isValidMoblie(phone)) {
+        } else if (isValidMoblie(phone)) {
             Toast.makeText(this, "Please enter Valid Phone", Toast.LENGTH_SHORT).show();
         } else if (whomToMeet.isEmpty()) {
             Toast.makeText(this, "Please enter Whom To Meet", Toast.LENGTH_SHORT).show();
@@ -387,6 +386,32 @@ public class CreateUserActivity extends AppCompatActivity {
             Toast.makeText(this, "Please enter Address", Toast.LENGTH_SHORT).show();
 
         } else {
+
+            String imageId = databaseReference.push().getKey();
+
+            String firstThreeChars = "";     //substring containing first 3 characters
+
+            if (name.length() > 3) {
+                firstThreeChars = name.substring(0, 3);
+            } else {
+                firstThreeChars = name;
+            }
+
+            String nextThreeChars = "";
+            if (email.length() > 3) {
+                nextThreeChars = email.substring(0, 3);
+            } else {
+                nextThreeChars = email;
+            }
+
+            String lastThreeDigits = "";     //substring containing last 3 characters
+
+            if (phone.length() > 3) {
+                lastThreeDigits = phone.substring(phone.length() - 3);
+            } else {
+                lastThreeDigits = phone;
+            }
+            String userId = (firstThreeChars + "_" + nextThreeChars + "_" + lastThreeDigits).toUpperCase();
 
             StorageReference ref = storageReference.child("Images/" + imageId);
             ref.putFile(Uri.fromFile(mPhotoFile)).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
@@ -399,7 +424,7 @@ public class CreateUserActivity extends AppCompatActivity {
                     assert downloadUrl != null;
 
 
-                    UsersModel usersModel = new UsersModel(downloadUrl.toString(), imageId, name, email, phone,gender, whomToMeet, purposeToMeet, address, state, city, district, checkInTime, checkOutTime, "Check-In", departmentName);
+                    UsersModel usersModel = new UsersModel(userId,downloadUrl.toString(), imageId, name, email, phone, gender, whomToMeet, purposeToMeet, address, state, city, district, checkInTime, checkOutTime, "Check-In", departmentName);
                     assert imageId != null;
                     databaseReference.child(departmentName).child(imageId).setValue(usersModel);
 
@@ -495,8 +520,7 @@ public class CreateUserActivity extends AppCompatActivity {
         builder.setItems(items, (dialog, item) -> {
             if (items[item].equals("Take Photo")) {
                 requestStoragePermission(true);
-            }
-             else if (items[item].equals("Cancel")) {
+            } else if (items[item].equals("Cancel")) {
                 dialog.dismiss();
             }
         });

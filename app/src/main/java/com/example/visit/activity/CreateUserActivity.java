@@ -107,11 +107,14 @@ public class CreateUserActivity extends AppCompatActivity {
     Button btnSubmit;
     @BindView(R.id.radioGender)
     RadioGroup radioGender;
+    //for data
     DatabaseReference databaseReference;
 
     String name, email, phone, gender, whomToMeet, purposeToMeet, address, state, city, district;
 
     ProgressDialog progressDialog, regProgress;
+
+    //for images
     StorageReference storageReference;
 
     MyAppPrefsManager myAppPrefsManager;
@@ -414,6 +417,7 @@ public class CreateUserActivity extends AppCompatActivity {
             String userId = (firstThreeChars + "_" + nextThreeChars + "_" + lastThreeDigits).toUpperCase();
 
             StorageReference ref = storageReference.child("Images/" + imageId);
+
             ref.putFile(Uri.fromFile(mPhotoFile)).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                 @Override
                 public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {

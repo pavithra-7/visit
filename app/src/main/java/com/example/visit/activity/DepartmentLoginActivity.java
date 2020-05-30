@@ -110,7 +110,7 @@ public class DepartmentLoginActivity extends AppCompatActivity {
                     }
                 } else {
                     progressDialog.dismiss();
-                    Toast.makeText(DepartmentLoginActivity.this, "No User Found !", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(DepartmentLoginActivity.this, "Not Valid!", Toast.LENGTH_SHORT).show();
                 }
             }
 

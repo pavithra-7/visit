@@ -88,6 +88,7 @@ public class DeaprtmentListActivity extends AppCompatActivity {
                         departmentModels.add(details);
                     }
 
+                    //String depName= Objects.requireNonNull(dataSnapshot.getValue(DepartmentModel.class)).getDepName();
                     LinearLayoutManager linearLayoutManager = new LinearLayoutManager(DeaprtmentListActivity.this, RecyclerView.VERTICAL, false);
                     recyclerDepartment.setLayoutManager(linearLayoutManager);
                     recyclerDepartment.setHasFixedSize(true);

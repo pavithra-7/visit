@@ -136,6 +136,7 @@ public class UsersGraphActivity extends AppCompatActivity {
                     barChart.animateXY(3000, 3000);
                     barChart.invalidate();
 
+
                     progressDialog.dismiss();
 
 
